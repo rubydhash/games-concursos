@@ -1,0 +1,68 @@
+<ui:composition template="/pages/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content-center">
+		<p:layout id="midlle">
+			<p:layoutUnit id="center-north" position="north" size="100"
+				closable="false" collapsible="false">
+				<p:messages id="msgs" />
+			</p:layoutUnit>
+			<p:layoutUnit id="center-south" position="south" size="100"
+				closable="false" collapsible="false">
+			</p:layoutUnit>
+			<p:layoutUnit id="center-east" position="east" size="400"
+				closable="false" collapsible="false">
+			</p:layoutUnit>
+			<p:layoutUnit id="center-west" position="west" size="400"
+				closable="false" collapsible="false">
+			</p:layoutUnit>
+
+			<p:layoutUnit id="center-center" position="center"
+				header="Login de Usu&#225;rio">
+				<h:form>
+					<table>
+
+						<tr>
+							<td><h:outputText value="Login:" /></td>
+							<td><p:inputText value="#{autenUser.login}" required="true"
+									validator="#{autenUser.validaCase}"
+									requiredMessage="Campo Login &#233; necess&#225;rio." /></td>
+							<td>
+								<div class="ui-widget ui-helper-clearfix">
+									<div class="ui-state-default ui-corner-all">
+										<span class="ui-icon ui-icon-help" title="Apenas N&#250;meros"></span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td><h:outputText value="Senha:" /></td>
+							<td><p:inputText value="#{autenUser.senha}" type="password"
+									required="true" id="senha"
+									requiredMessage="Campo Senha &#233; necess&#225;rio." /></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><p:commandButton value="Entrar" ajax="false"
+									action="#{autenUser.logar}"></p:commandButton></td>
+							<td align="right"><h:outputLink value="cadasuser.jsf"
+									class="link">Cadastre-se</h:outputLink></td>
+							<td></td>
+						</tr>
+						<tr>
+
+							<td colspan="3" align="center"><h:outputLink
+									value="esqueci.jsf" styleClass="link">Esqueci a senha!</h:outputLink></td>
+
+						</tr>
+
+					</table>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+	</ui:define>
+</ui:composition>

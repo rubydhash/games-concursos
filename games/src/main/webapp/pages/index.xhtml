@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/templates/template.xhtml">
+	<ui:define name="content-west">
+		<h:form>
+			<p:menu>
+				<p:submenu label="Administrator">
+					<p:menuitem value="Manage Users" update=":mainContent"
+						actionListener="#" icon="ui-icon-person" />
+				</p:submenu>
+				<p:submenu label="User">
+					<p:menuitem value="Main Page" update=":mainContent"
+						actionListener="#" />
+				</p:submenu>
+			</p:menu>
+		</h:form>
+	</ui:define>
+	<ui:define name="content-center">
+		<p:outputPanel id="mainContent">
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>
+
+</html>
