@@ -1,9 +1,0 @@
-@CHARSET "ISO-8859-1";
-
-#north, #south, #west, #east, #center, #center-north,  #center-west, #center-east, #center-south, #center-center{
-	border: 0;
-}
-
-#table-form, #center-center, .link, #msgs{
-	font-size: small;
-}
