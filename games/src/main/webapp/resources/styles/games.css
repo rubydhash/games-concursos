@@ -1,3 +1,84 @@
 body {
 	font-size: 10px;
 }
+
+.cmmiTitulo {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #033330;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    display: block;
+    height: 110px;
+    width: 90px;
+}
+
+.cmmiProcessos {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #092121;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    display: block;
+    height: 110px;
+    width: 90px;
+}
+
+.cmmiProjetos {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #418749;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    display: block;
+    height: 110px;
+    width: 90px;
+}
+
+.cmmiEngenharia {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #454665;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    display: block;
+    height: 110px;
+    width: 90px;
+}
+
+.cmmiSuporte {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #787899;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    display: block;
+    height: 110px;
+    width: 90px;
+}
+
+.slotActive {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #FFCC00;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+}
