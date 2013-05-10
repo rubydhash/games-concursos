@@ -1,50 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<p:menubar autoDisplay="true">
-	<p:submenu label="File" icon="ui-icon-document">
-		<p:submenu label="New" icon="ui-icon-contact">
-			<p:menuitem value="Project" url="#" />
-			<p:menuitem value="Other" url="#" />
+<h:form>
+	<p:menu style="width: 95%;">
+		<p:menuitem value="Home" action="inicio" icon="ui-icon-home" />
+		<p:submenu label="CMMI v1.3">
+			<p:menuitem value="representação por Estágio"
+				action="cmmi_representacao_por_estagio" icon="ui-icon-carat-1-e" />
+			<p:menuitem value="representação Contínua" action="#"
+				icon="ui-icon-carat-1-e" />
 		</p:submenu>
-		<p:menuitem value="Open" url="#" />
-		<p:separator />
-		<p:menuitem value="Quit" url="#" />
-	</p:submenu>
-
-	<p:submenu label="Edit" icon="ui-icon-pencil">
-		<p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />
-		<p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
-	</p:submenu>
-
-	<p:submenu label="Help" icon="ui-icon-help">
-		<p:menuitem value="Contents" url="#" />
-		<p:submenu label="Search" icon="ui-icon-search">
-			<p:submenu label="Text">
-				<p:menuitem value="Workspace" url="#" />
-			</p:submenu>
-			<p:menuitem value="File" url="#" />
+		<p:submenu label="PMBOK v4 2008">
+			<p:menuitem value="Main Page" action="#" icon="ui-icon-carat-1-e" />
 		</p:submenu>
-	</p:submenu>
-
-	<p:submenu label="Actions" icon="ui-icon-gear">
-		<p:submenu label="Ajax" icon="ui-icon-refresh">
-			<p:menuitem value="Save" actionListener="#" icon="ui-icon-disk"
-				update="messages" />
-			<p:menuitem value="Update" actionListener="#"
-				icon="ui-icon-arrowrefresh-1-w" update="messages" />
+		<p:submenu label="ITIL v3 2011">
+			<p:menuitem value="Main Page" action="#" icon="ui-icon-carat-1-e" />
 		</p:submenu>
-		<p:submenu label="Non-Ajax" icon="ui-icon-newwin">
-			<p:menuitem value="Delete" actionListener="#" icon="ui-icon-close"
-				update="messages" ajax="false" />
+		<p:submenu label="COBIT v4.1">
+			<p:menuitem value="Main Page" action="#" icon="ui-icon-carat-1-e" />
 		</p:submenu>
-	</p:submenu>
-
-	<p:menuitem value="Quit" url="#" icon="ui-icon-close" />
-</p:menubar>
-
+		<p:submenu label="MPS.br 2012">
+			<p:menuitem value="Main Page" action="#" icon="ui-icon-carat-1-e" />
+		</p:submenu>
+	</p:menu>
+</h:form>
 
 </html>
