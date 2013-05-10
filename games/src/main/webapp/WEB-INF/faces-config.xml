@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<faces-config
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
-    version="2.1">
-    
-    <application>
+<faces-config version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
+	<navigation-rule>
+			<navigation-case>
+			<display-name>Início</display-name>
+			<from-outcome>inicio</from-outcome>
+			<to-view-id>/pages/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<display-name>CMMI representação por Estágio</display-name>
+			<from-outcome>cmmi_representacao_por_estagio</from-outcome>
+			<to-view-id>/pages/aplicativos/cmmi/cmmi_representacao_por_estagio.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<application>
 		<resource-bundle>
 			<base-name>messages</base-name>
-			<var>msg</var>
+			<var>messages</var>
 		</resource-bundle>
 	</application>
-
 </faces-config>

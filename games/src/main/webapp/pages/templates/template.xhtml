@@ -4,10 +4,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <h:head>
-	<title><ui:insert name="title">#{msg['title']}</ui:insert></title>
+	<title><ui:insert name="title">#{messages['title']}</ui:insert></title>
 	<!-- para mudar o icone do titulo da aba <link rel="shortcut icon" href="/favicon.ico" />-->
 	<link type="text/css" rel="stylesheet"
 		href="#{request.contextPath}/resources/styles/games.css" />
@@ -15,30 +16,38 @@
 		src="#{request.contextPath}/resources/scripts/games.js"></script>
 </h:head>
 <h:body>
-	<p:layout fullPage="true">
-		<p:layoutUnit id="north" position="north" size="100" closable="false"
-			collapsible="false">
-			<ui:insert name="content-north"></ui:insert>
-		</p:layoutUnit>
 
-		<p:layoutUnit id="south" position="south" size="100" closable="false"
-			collapsible="false">
-			<ui:insert name="content-south"></ui:insert>
-		</p:layoutUnit>
+	<pe:layout fullPage="true">
+		<pe:layoutPane id="north" position="north" resizable="false"
+			closable="false" size="50">
+			<p:panel>
+				<h:outputText value="TOPO" />
+			</p:panel>
+		</pe:layoutPane>
+		<pe:layoutPane position="west" resizable="false" closable="true"
+			size="200">
+			<ui:include src="/pages/menu.xhtml" />
+		</pe:layoutPane>
+		<pe:layoutPane id="center" position="center" resizable="false"
+			closable="false">
+			<ui:insert name="content-center" />
+		</pe:layoutPane>
+		<pe:layoutPane id="south" position="south" resizable="false"
+			closable="false" size="40">
+			<p:panel style="text-align: center;">
+				<h:outputText value="#{messages['bottom']}" />
+			</p:panel>
+		</pe:layoutPane>
+	</pe:layout>
 
-		<p:layoutUnit id="west" position="west" size="200" closable="false"
-			collapsible="false">
-			<ui:insert name="content-west"></ui:insert>
-		</p:layoutUnit>
+	<p:ajaxStatus onstart="statusDialog.show();"
+		onsuccess="statusDialog.hide();" />
 
-		<p:layoutUnit id="east" position="east" size="200" closable="false"
-			collapsible="false">
-			<ui:insert name="content-east"></ui:insert>
-		</p:layoutUnit>
+	<p:dialog modal="false" widgetVar="statusDialog"
+		header="#{messages['label.por.favor.aguarde']}" draggable="false"
+		closable="false" resizable="false">
+		<p:graphicImage value="/resources/images/ajaxloadingbar.gif" />
+	</p:dialog>
 
-		<p:layoutUnit id="center" position="center">
-			<ui:insert name="content-center"></ui:insert>
-		</p:layoutUnit>
-	</p:layout>
 </h:body>
 </html>
