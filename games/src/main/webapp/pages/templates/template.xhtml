@@ -20,13 +20,11 @@
 	<pe:layout fullPage="true">
 		<pe:layoutPane id="north" position="north" resizable="false"
 			closable="false" size="50">
-			<p:panel>
-				<h:outputText value="TOPO" />
-			</p:panel>
-		</pe:layoutPane>
-		<pe:layoutPane position="west" resizable="false" closable="true"
-			size="200">
 			<ui:include src="/pages/menu.xhtml" />
+		</pe:layoutPane>
+		<pe:layoutPane position="east" resizable="false" closable="true"
+			size="200">
+			<ui:insert name="content-east" />
 		</pe:layoutPane>
 		<pe:layoutPane id="center" position="center" resizable="false"
 			closable="false">
