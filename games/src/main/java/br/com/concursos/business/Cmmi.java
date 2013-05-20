@@ -11,6 +11,7 @@ import br.com.concursos.enumeration.ProcessoCmmi;
 import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
 import br.com.concursos.exception.ConteudoNaoEncontradoException;
+import br.com.concursos.exception.GameErrorException;
 import br.com.concursos.exception.QuadranteInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
 
@@ -46,8 +47,17 @@ public class Cmmi {
 	 * Verifica se os processos estão no devido lugar do Tabuleiro.
 	 * 
 	 * @return {@link Boolean}
+	 * @throws GameErrorException
 	 */
-	public boolean finaliza() {
+	public boolean finaliza() throws GameErrorException {
+		if (verificaTabuleiro()) {
+			throw new GameErrorException();
+		}
+		
+		return true;
+	}
+
+	private boolean verificaTabuleiro() {
 		return true;
 	}
 

@@ -114,6 +114,7 @@ public enum ProcessoCmmi {
 				return processoCmmi;
 			}
 		}
+		
 		return null;
 	}
 
@@ -123,6 +124,7 @@ public enum ProcessoCmmi {
 				return processoCmmi;
 			}
 		}
+		
 		return null;
 	}
 
@@ -133,6 +135,7 @@ public enum ProcessoCmmi {
 				processosCmmi.add(processoCmmi);
 			}
 		}
+		
 		return processosCmmi;
 	}
 
@@ -143,6 +146,7 @@ public enum ProcessoCmmi {
 				processosCmmi.add(processoCmmi);
 			}
 		}
+		
 		return processosCmmi;
 	}
 

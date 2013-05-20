@@ -40,12 +40,22 @@ public class TabuleiroTest {
 
 	@Test
 	public void testGetTotalQuadrantesHorizontal() {
-		assertEquals("Total de quadrantes na horizontal (x) = 4", 4, tabuleiro.getTotalQuadrantesHorizontal());
+		assertEquals("Total de quadrantes na horizontal (x) = 3", 3, tabuleiro.getTotalQuadrantesHorizontal());
 	}
 
 	@Test
 	public void testGetTotalQuadrantesVertical() {
-		assertEquals("Total de quadrantes na horizontal (y) = 3", 3, tabuleiro.getTotalQuadrantesVertical());
+		assertEquals("Total de quadrantes na vertical (y) = 4", 4, tabuleiro.getTotalQuadrantesVertical());
+	}
+
+	@Test
+	public void testGetQuadrantesHorizontal() {
+		assertEquals("Quadrantes horizontal (x) = 3", 3, tabuleiro.getQuadrantesHorizontais(0).size());
+	}
+
+	@Test
+	public void testGetQuadrantesVertical() {
+		assertEquals("Quadrantes vertical (y) = 4", 4, tabuleiro.getQuadrantesVerticais(0).size());
 	}
 
 	@Test
@@ -123,6 +133,12 @@ public class TabuleiroTest {
 	@Test(expected = ConteudoNaoEncontradoException.class)
 	public void testGetConteudoNaoEncontrado() throws ConteudoNaoEncontradoException {
 		tabuleiro.getConteudo(new String("teste"));
+	}
+
+	@Test
+	public void testTabuleiro() {
+		assertNotNull(tabuleiro.toString());
+		// System.out.println(tabuleiro);
 	}
 
 }
