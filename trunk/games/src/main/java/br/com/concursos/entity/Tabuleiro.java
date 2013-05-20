@@ -42,7 +42,7 @@ public class Tabuleiro<T> {
 	 * @return totalQuadrantesHorizontal
 	 */
 	public int getTotalQuadrantesHorizontal() {
-		return quadrantes.length;
+		return quadrantes[0].length;
 	}
 
 	/**
@@ -51,7 +51,39 @@ public class Tabuleiro<T> {
 	 * @return totalQuadrantesVertival
 	 */
 	public int getTotalQuadrantesVertical() {
-		return quadrantes[0].length;
+		return quadrantes.length;
+	}
+
+	/**
+	 * Retorna os Quadrantes de uma determinada linha na Vertical do Tabuleiro.
+	 * 
+	 * @param linha
+	 * @return {@link List} {@link Quadrante}
+	 */
+	public List<Quadrante<T>> getQuadrantesVerticais(int coluna) {
+		List<Quadrante<T>> quadrantesVerticais = new ArrayList<Quadrante<T>>();
+		
+		for (int i = 0; i < getTotalQuadrantesVertical(); i++) {
+			quadrantesVerticais.add(quadrantes[i][coluna]);
+		}
+
+		return quadrantesVerticais;
+	}
+
+	/**
+	 * Retorna os Quadrantes de uma determinada linha na Horizontal do Tabuleiro.
+	 * 
+	 * @param linha
+	 * @return {@link List} {@link Quadrante}
+	 */
+	public List<Quadrante<T>> getQuadrantesHorizontais(int linha) {
+		List<Quadrante<T>> quadrantesHorizontais = new ArrayList<Quadrante<T>>();
+		
+		for (int j = 0; j < getTotalQuadrantesHorizontal(); j++) {
+			quadrantesHorizontais.add(quadrantes[linha][j]);
+		}
+
+		return quadrantesHorizontais;
 	}
 
 	/**
@@ -169,6 +201,20 @@ public class Tabuleiro<T> {
 		quadrante.getConteudo().remove(conteudo);
 
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer tabuleiro = new StringBuffer();
+		for (int i = 0; i < quadrantes.length; i++) {
+			for (int j = 0; j < quadrantes[i].length; j++) {
+				tabuleiro.append(quadrantes[i][j]);
+			}
+
+			tabuleiro.append("\n");
+		}
+
+		return tabuleiro.toString();
 	}
 
 }

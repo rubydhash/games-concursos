@@ -38,12 +38,12 @@ public class CmmiTest {
 	}
 
 	@Test
-	public void testFinalizaComSucessoGame() {
+	public void testFinalizaComSucessoGame() throws GameErrorException {
 		assertTrue(cmmi.finaliza());
 	}
 
 	@Test(expected = GameErrorException.class)
-	public void testFinalizaComErrosGame() {
+	public void testFinalizaComErrosGame() throws GameErrorException {
 		cmmi.finaliza();
 	}
 
