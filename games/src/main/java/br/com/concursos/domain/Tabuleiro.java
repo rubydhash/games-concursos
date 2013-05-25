@@ -1,4 +1,4 @@
-package br.com.concursos.entity;
+package br.com.concursos.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class Tabuleiro<T> {
 	}
 
 	/**
-	 * Retorna os Quadrantes de uma determinada linha na Vertical do Tabuleiro.
+	 * Retorna os Quadrantes de uma determinada coluna na Vertical do Tabuleiro.
 	 * 
 	 * @param linha
 	 * @return {@link List} {@link Quadrante}
@@ -68,6 +68,20 @@ public class Tabuleiro<T> {
 		}
 
 		return quadrantesVerticais;
+	}
+	
+	/**
+	 * Altera todos os titulos da coluna na Vertical do Tabuleiro.
+	 * 
+	 * @param linha
+	 * @return {@link List} {@link Quadrante}
+	 */
+	public void setTituloQuadrantesVerticais(int coluna, Object tituloColuna) {
+		List<Quadrante<T>> quadrantesVerticais = getQuadrantesVerticais(coluna);
+		
+		for (int i = 0; i < quadrantesVerticais.size(); i++) {
+			quadrantesVerticais.get(i).setTituloColuna(tituloColuna);
+		}
 	}
 
 	/**
@@ -85,9 +99,23 @@ public class Tabuleiro<T> {
 
 		return quadrantesHorizontais;
 	}
+	
+	/**
+	 * Altera todos os titulos da linha na Horizontal do Tabuleiro.
+	 * 
+	 * @param linha
+	 * @param tituloLinha
+	 */
+	public void setTituloQuadrantesHorizontais(int linha, Object tituloLinha) {
+		List<Quadrante<T>> quadrantesHorizontais = getQuadrantesHorizontais(linha);
+		
+		for (int i = 0; i < quadrantesHorizontais.size(); i++) {
+			quadrantesHorizontais.get(i).setTituloLinha(tituloLinha);
+		}
+	}
 
 	/**
-	 * Retorna o quantos conteúdos estão no Tabuleiro.
+	 * Retorna o quantos conteudos estao no Tabuleiro.
 	 * 
 	 * @return totalConteudos
 	 */
@@ -103,7 +131,7 @@ public class Tabuleiro<T> {
 	}
 
 	/**
-	 * Procura o conteúdo no Tabuleiro.
+	 * Procura o conteudo no Tabuleiro.
 	 * 
 	 * @param conteudo
 	 * @return {@link Boolean}
@@ -124,13 +152,13 @@ public class Tabuleiro<T> {
 	}
 
 	/**
-	 * Retorna o Quadrante que se encontra o conteúdo no Tabuleiro.
+	 * Retorna o Quadrante que se encontra o conteudo no Tabuleiro.
 	 * 
 	 * @param conteudo
 	 * @return {@link Quadrante}
 	 * @throws ConteudoNaoEncontradoException
 	 */
-	public Quadrante<T> getConteudo(T conteudo) throws ConteudoNaoEncontradoException {
+	public Quadrante<T> getQuadrante(T conteudo) throws ConteudoNaoEncontradoException {
 		for (int i = 0; i < quadrantes.length; i++) {
 			for (int j = 0; j < quadrantes[i].length; j++) {
 				List<T> conteudos = quadrantes[i][j].getConteudo();
@@ -146,7 +174,7 @@ public class Tabuleiro<T> {
 	}
 
 	/**
-	 * Retorna o conteúdo do Quadrante indicado
+	 * Retorna o conteudo do Quadrante indicado
 	 * 
 	 * @param linha
 	 * @param coluna
@@ -157,7 +185,7 @@ public class Tabuleiro<T> {
 	}
 
 	/**
-	 * Adiciona o conteúdo no Tabuleiro no quadrante desejado. (somente a linha e a coluna são necessários)
+	 * Adiciona o conteudo no Tabuleiro no quadrante desejado. (somente a linha e a coluna sao necessarios)
 	 * 
 	 * @param conteudo
 	 * @param quadrante
@@ -189,7 +217,7 @@ public class Tabuleiro<T> {
 	}
 
 	/**
-	 * Remove o conteúdo do Tabuleiro no quadrante desejado. (somente a linha e a coluna são necessários)
+	 * Remove o contedo do Tabuleiro no quadrante desejado. (somente a linha e a coluna sao necessarios)
 	 * 
 	 * @param conteudo
 	 * @param quadrante
@@ -197,7 +225,7 @@ public class Tabuleiro<T> {
 	 * @throws ConteudoNaoEncontradoException
 	 */
 	public boolean removeConteudo(T conteudo) throws ConteudoNaoEncontradoException {
-		Quadrante<T> quadrante = getConteudo(conteudo);
+		Quadrante<T> quadrante = getQuadrante(conteudo);
 		quadrante.getConteudo().remove(conteudo);
 
 		return true;

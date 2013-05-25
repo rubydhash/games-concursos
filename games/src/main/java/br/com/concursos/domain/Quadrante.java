@@ -1,4 +1,4 @@
-package br.com.concursos.entity;
+package br.com.concursos.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 public class Quadrante<T> {
 
 	private int linha;
-	private Object linhaTitulo;
+	private Object tituloLinha;
 	private int coluna;
-	private Object colunaTitulo;
+	private Object tituloColuna;
 	private List<T> conteudo;
 
 	public Quadrante(int linha, int coluna) {
@@ -27,24 +27,32 @@ public class Quadrante<T> {
 		return linha;
 	}
 
-	public Object getLinhaTitulo() {
-		return linhaTitulo;
+	public void setLinha(int linha) {
+		this.linha = linha;
 	}
 
-	public void setLinhaTitulo(Object linhaTitulo) {
-		this.linhaTitulo = linhaTitulo;
+	public Object getTituloLinha() {
+		return tituloLinha;
+	}
+
+	public void setTituloLinha(Object tituloLinha) {
+		this.tituloLinha = tituloLinha;
 	}
 
 	public int getColuna() {
 		return coluna;
 	}
 
-	public Object getColunaTitulo() {
-		return colunaTitulo;
+	public void setColuna(int coluna) {
+		this.coluna = coluna;
 	}
 
-	public void setColunaTitulo(Object colunaTitulo) {
-		this.colunaTitulo = colunaTitulo;
+	public Object getTituloColuna() {
+		return tituloColuna;
+	}
+
+	public void setTituloColuna(Object tituloColuna) {
+		this.tituloColuna = tituloColuna;
 	}
 
 	public List<T> getConteudo() {

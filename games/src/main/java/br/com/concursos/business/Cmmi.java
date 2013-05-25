@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.inject.Named;
 
-import br.com.concursos.entity.Quadrante;
-import br.com.concursos.entity.Tabuleiro;
+import br.com.concursos.domain.Quadrante;
+import br.com.concursos.domain.Tabuleiro;
 import br.com.concursos.enumeration.ProcessoCmmi;
 import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
@@ -44,7 +44,7 @@ public class Cmmi {
 	}
 
 	/**
-	 * Verifica se os processos estão no devido lugar do Tabuleiro.
+	 * Verifica se os processos estao no devido lugar do Tabuleiro.
 	 * 
 	 * @return {@link Boolean}
 	 * @throws GameErrorException
@@ -62,7 +62,7 @@ public class Cmmi {
 	}
 
 	/**
-	 * Adiciona o processo no Tabuleiro e remove do painel de processos disponíveis.
+	 * Adiciona o processo no Tabuleiro e remove do painel de processos disponiveis.
 	 * 
 	 * @param processoCmmi
 	 * @param quadrante
@@ -80,7 +80,7 @@ public class Cmmi {
 	}
 
 	/**
-	 * Remove o processo do Tabuleiro e adiciona no painel de processos disponíveis.
+	 * Remove o processo do Tabuleiro e adiciona no painel de processos disponiveis.
 	 * 
 	 * @param processoCmmi
 	 * @return {@link Boolean}

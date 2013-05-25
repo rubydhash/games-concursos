@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.concursos.business.Cmmi;
-import br.com.concursos.entity.Quadrante;
+import br.com.concursos.domain.Quadrante;
 import br.com.concursos.enumeration.ProcessoCmmi;
 import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
