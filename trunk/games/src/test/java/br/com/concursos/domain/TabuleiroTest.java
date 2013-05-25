@@ -1,4 +1,4 @@
-package br.com.concursos.entity;
+package br.com.concursos.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -52,10 +52,22 @@ public class TabuleiroTest {
 	public void testGetQuadrantesHorizontal() {
 		assertEquals("Quadrantes horizontal (x) = 3", 3, tabuleiro.getQuadrantesHorizontais(0).size());
 	}
+	
+	@Test
+	public void testSetTituloQuadrantesHoriozontais() {
+		tabuleiro.setTituloQuadrantesHorizontais(0, "Teste");
+		assertEquals("Titulo da linha dos Quadrantes Horizontais", "Teste", tabuleiro.getQuadrantesHorizontais(0).get(0).getTituloLinha());
+	}
 
 	@Test
 	public void testGetQuadrantesVertical() {
 		assertEquals("Quadrantes vertical (y) = 4", 4, tabuleiro.getQuadrantesVerticais(0).size());
+	}
+	
+	@Test
+	public void testSetTituloQuadrantesVerticais() {
+		tabuleiro.setTituloQuadrantesVerticais(0, "Teste");
+		assertEquals("Titulo da coluna dos Quadrantes Verticais", "Teste", tabuleiro.getQuadrantesVerticais(0).get(0).getTituloColuna());
 	}
 
 	@Test
@@ -64,7 +76,7 @@ public class TabuleiroTest {
 		tabuleiro.addConteudo(new String("teste2"), new Quadrante<String>(1, 1));
 		tabuleiro.addConteudo(new String("teste3"), new Quadrante<String>(2, 2));
 
-		assertEquals("Total de conteúdos no Tabuleiro, independente de onde estiver.", 3, tabuleiro.getTotalConteudos());
+		assertEquals("Total de conteudos no Tabuleiro, independente de onde estiver.", 3, tabuleiro.getTotalConteudos());
 	}
 
 	@Test
@@ -124,15 +136,15 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testGetConteudo() throws ConteudoNaoEncontradoException, ConteudoExistenteException, ConteudoExcedeLimitePermitidoException,
+	public void testGetQuadrante() throws ConteudoNaoEncontradoException, ConteudoExistenteException, ConteudoExcedeLimitePermitidoException,
 			QuadranteInvalidoException {
 		tabuleiro.addConteudo(new String("teste"), new Quadrante<String>(0, 0));
-		assertNotNull(tabuleiro.getConteudo(new String("teste")));
+		assertNotNull(tabuleiro.getQuadrante(new String("teste")));
 	}
 
 	@Test(expected = ConteudoNaoEncontradoException.class)
 	public void testGetConteudoNaoEncontrado() throws ConteudoNaoEncontradoException {
-		tabuleiro.getConteudo(new String("teste"));
+		tabuleiro.getQuadrante(new String("teste"));
 	}
 
 	@Test
