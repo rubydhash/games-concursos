@@ -2,6 +2,24 @@ body {
 	font-size: 0.5em;
 }
 
+.ui-layout-north .ui-layout-unit-content {
+	overflow: visible !important;
+}
+
+.ui-layout-north {
+	z-index: 20 !important;
+	overflow: visible !important;
+}
+
+.ui-layout-east .ui-layout-unit-content {
+	overflow: visible !important;
+}
+
+.ui-layout-east {
+	z-index: 20 !important;
+	overflow: visible !important;
+}
+
 .ui-cmmi {
 	moz-border-bottom-colors: none;
 	-moz-border-left-colors: none;
