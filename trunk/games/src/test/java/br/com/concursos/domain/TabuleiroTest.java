@@ -39,35 +39,35 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testGetTotalQuadrantesHorizontal() {
-		assertEquals("Total de quadrantes na horizontal (x) = 3", 3, tabuleiro.getTotalQuadrantesHorizontal());
+	public void testGetTotalQuadrantesSetorHorizontal() {
+		assertEquals("Total de quadrantes na horizontal (x) = 3", 3, tabuleiro.getTotalQuadrantesSetorHorizontal());
 	}
 
 	@Test
-	public void testGetTotalQuadrantesVertical() {
-		assertEquals("Total de quadrantes na vertical (y) = 4", 4, tabuleiro.getTotalQuadrantesVertical());
+	public void testGetTotalQuadrantesSetorVertical() {
+		assertEquals("Total de quadrantes na vertical (y) = 4", 4, tabuleiro.getTotalQuadrantesSetorVertical());
 	}
 
 	@Test
-	public void testGetQuadrantesHorizontal() {
-		assertEquals("Quadrantes horizontal (x) = 3", 3, tabuleiro.getQuadrantesHorizontais(0).size());
+	public void testGetQuadrantesSetorHorizontal() {
+		assertEquals("Quadrantes horizontal (x) = 3", 3, tabuleiro.getQuadrantesSetorHorizontal(0).size());
 	}
 	
 	@Test
-	public void testSetTituloQuadrantesHoriozontais() {
-		tabuleiro.setTituloQuadrantesHorizontais(0, "Teste");
-		assertEquals("Titulo da linha dos Quadrantes Horizontais", "Teste", tabuleiro.getQuadrantesHorizontais(0).get(0).getTituloLinha());
+	public void testSetTituloQuadrantesSetorHoriozontal() {
+		tabuleiro.setTituloQuadrantesSetorHorizontal(0, "Teste");
+		assertEquals("Titulo da linha dos Quadrantes Horizontais", "Teste", tabuleiro.getQuadrantesSetorHorizontal(0).get(0).getTituloLinha());
 	}
 
 	@Test
-	public void testGetQuadrantesVertical() {
-		assertEquals("Quadrantes vertical (y) = 4", 4, tabuleiro.getQuadrantesVerticais(0).size());
+	public void testGetQuadrantesSetorVertical() {
+		assertEquals("Quadrantes vertical (y) = 4", 4, tabuleiro.getQuadrantesSetorVertical(0).size());
 	}
 	
 	@Test
-	public void testSetTituloQuadrantesVerticais() {
-		tabuleiro.setTituloQuadrantesVerticais(0, "Teste");
-		assertEquals("Titulo da coluna dos Quadrantes Verticais", "Teste", tabuleiro.getQuadrantesVerticais(0).get(0).getTituloColuna());
+	public void testSetTituloQuadrantesSetorVertical() {
+		tabuleiro.setTituloQuadrantesSetorVertical(0, "Teste");
+		assertEquals("Titulo da coluna dos Quadrantes Verticais", "Teste", tabuleiro.getQuadrantesSetorVertical(0).get(0).getTituloColuna());
 	}
 
 	@Test

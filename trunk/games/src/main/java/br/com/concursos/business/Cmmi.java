@@ -7,6 +7,9 @@ import javax.inject.Named;
 
 import br.com.concursos.domain.Quadrante;
 import br.com.concursos.domain.Tabuleiro;
+import br.com.concursos.enumeration.GrupoProcessosCmmi;
+import br.com.concursos.enumeration.NivelCmmi;
+import br.com.concursos.enumeration.NivelDificuldade;
 import br.com.concursos.enumeration.ProcessoCmmi;
 import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
@@ -20,6 +23,7 @@ public class Cmmi {
 
 	private List<ProcessoCmmi> processos;
 	private Tabuleiro<ProcessoCmmi> tabuleiro;
+	private NivelDificuldade nivelDificuldade;
 
 	public Cmmi() throws TabuleiroTamanhoInvalidoException {
 		inicializa();
@@ -41,6 +45,28 @@ public class Cmmi {
 		for (int i = 0; i < arrayProcessos.length; i++) {
 			processos.add(arrayProcessos[i]);
 		}
+
+		nivelDificuldade = NivelDificuldade.FACIL;
+		montaTabuleiro();
+
+	}
+
+	private void montaTabuleiro() {
+		if (this.nivelDificuldade.equals(NivelDificuldade.FACIL)) {
+			tabuleiro.setTituloQuadrantesSetorHorizontal(0, GrupoProcessosCmmi.GESTAO_DE_PROCESSOS);
+			tabuleiro.setTituloQuadrantesSetorHorizontal(1, GrupoProcessosCmmi.GESTAO_DE_PROJETOS);
+			tabuleiro.setTituloQuadrantesSetorHorizontal(2, GrupoProcessosCmmi.ENGENHARIA);
+			tabuleiro.setTituloQuadrantesSetorHorizontal(3, GrupoProcessosCmmi.SUPORTE);
+
+			tabuleiro.setTituloQuadrantesSetorVertical(0, NivelCmmi.NIVEL_2);
+			tabuleiro.setTituloQuadrantesSetorVertical(1, NivelCmmi.NIVEL_3);
+			tabuleiro.setTituloQuadrantesSetorVertical(2, NivelCmmi.NIVEL_4);
+			tabuleiro.setTituloQuadrantesSetorVertical(3, NivelCmmi.NIVEL_5);
+		} else if (this.nivelDificuldade.equals(NivelDificuldade.MEDIO)) {
+
+		} else if (this.nivelDificuldade.equals(NivelDificuldade.DIFICIL)) {
+
+		}
 	}
 
 	/**
@@ -53,7 +79,7 @@ public class Cmmi {
 		if (verificaTabuleiro()) {
 			throw new GameErrorException();
 		}
-		
+
 		return true;
 	}
 
