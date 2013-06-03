@@ -6,8 +6,8 @@ import java.util.List;
 public class Quadrante<T> {
 
 	private int linha;
-	private Object tituloLinha;
 	private int coluna;
+	private Object tituloLinha;
 	private Object tituloColuna;
 	private List<T> conteudo;
 
@@ -31,20 +31,20 @@ public class Quadrante<T> {
 		this.linha = linha;
 	}
 
-	public Object getTituloLinha() {
-		return tituloLinha;
-	}
-
-	public void setTituloLinha(Object tituloLinha) {
-		this.tituloLinha = tituloLinha;
-	}
-
 	public int getColuna() {
 		return coluna;
 	}
 
 	public void setColuna(int coluna) {
 		this.coluna = coluna;
+	}
+
+	public Object getTituloLinha() {
+		return tituloLinha;
+	}
+
+	public void setTituloLinha(Object tituloLinha) {
+		this.tituloLinha = tituloLinha;
 	}
 
 	public Object getTituloColuna() {

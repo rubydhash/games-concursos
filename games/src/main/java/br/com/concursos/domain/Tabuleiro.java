@@ -39,18 +39,18 @@ public class Tabuleiro<T> {
 	/**
 	 * Retorna o total de Quadrantes na Horizontal do Tabuleiro.
 	 * 
-	 * @return totalQuadrantesHorizontal
+	 * @return totalQuadrantesSetorHorizontal
 	 */
-	public int getTotalQuadrantesHorizontal() {
+	public int getTotalQuadrantesSetorHorizontal() {
 		return quadrantes[0].length;
 	}
 
 	/**
 	 * Retorna o total de Quadrantes na Vertical do Tabuleiro.
 	 * 
-	 * @return totalQuadrantesVertival
+	 * @return totalQuadrantesSetorVertical
 	 */
-	public int getTotalQuadrantesVertical() {
+	public int getTotalQuadrantesSetorVertical() {
 		return quadrantes.length;
 	}
 
@@ -60,10 +60,10 @@ public class Tabuleiro<T> {
 	 * @param linha
 	 * @return {@link List} {@link Quadrante}
 	 */
-	public List<Quadrante<T>> getQuadrantesVerticais(int coluna) {
+	public List<Quadrante<T>> getQuadrantesSetorVertical(int coluna) {
 		List<Quadrante<T>> quadrantesVerticais = new ArrayList<Quadrante<T>>();
 		
-		for (int i = 0; i < getTotalQuadrantesVertical(); i++) {
+		for (int i = 0; i < getTotalQuadrantesSetorVertical(); i++) {
 			quadrantesVerticais.add(quadrantes[i][coluna]);
 		}
 
@@ -76,8 +76,8 @@ public class Tabuleiro<T> {
 	 * @param linha
 	 * @return {@link List} {@link Quadrante}
 	 */
-	public void setTituloQuadrantesVerticais(int coluna, Object tituloColuna) {
-		List<Quadrante<T>> quadrantesVerticais = getQuadrantesVerticais(coluna);
+	public void setTituloQuadrantesSetorVertical(int coluna, Object tituloColuna) {
+		List<Quadrante<T>> quadrantesVerticais = getQuadrantesSetorVertical(coluna);
 		
 		for (int i = 0; i < quadrantesVerticais.size(); i++) {
 			quadrantesVerticais.get(i).setTituloColuna(tituloColuna);
@@ -90,10 +90,10 @@ public class Tabuleiro<T> {
 	 * @param linha
 	 * @return {@link List} {@link Quadrante}
 	 */
-	public List<Quadrante<T>> getQuadrantesHorizontais(int linha) {
+	public List<Quadrante<T>> getQuadrantesSetorHorizontal(int linha) {
 		List<Quadrante<T>> quadrantesHorizontais = new ArrayList<Quadrante<T>>();
 		
-		for (int j = 0; j < getTotalQuadrantesHorizontal(); j++) {
+		for (int j = 0; j < getTotalQuadrantesSetorHorizontal(); j++) {
 			quadrantesHorizontais.add(quadrantes[linha][j]);
 		}
 
@@ -106,8 +106,8 @@ public class Tabuleiro<T> {
 	 * @param linha
 	 * @param tituloLinha
 	 */
-	public void setTituloQuadrantesHorizontais(int linha, Object tituloLinha) {
-		List<Quadrante<T>> quadrantesHorizontais = getQuadrantesHorizontais(linha);
+	public void setTituloQuadrantesSetorHorizontal(int linha, Object tituloLinha) {
+		List<Quadrante<T>> quadrantesHorizontais = getQuadrantesSetorHorizontal(linha);
 		
 		for (int i = 0; i < quadrantesHorizontais.size(); i++) {
 			quadrantesHorizontais.get(i).setTituloLinha(tituloLinha);
@@ -196,8 +196,8 @@ public class Tabuleiro<T> {
 	 */
 	public boolean addConteudo(T conteudo, Quadrante<T> quadrante) throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException,
 			QuadranteInvalidoException {
-		if ((quadrante.getLinha() < 0 || quadrante.getLinha() > getTotalQuadrantesHorizontal() - 1)
-				|| (quadrante.getColuna() < 0 || quadrante.getColuna() > getTotalQuadrantesVertical() - 1)) {
+		if ((quadrante.getLinha() < 0 || quadrante.getLinha() > getTotalQuadrantesSetorHorizontal() - 1)
+				|| (quadrante.getColuna() < 0 || quadrante.getColuna() > getTotalQuadrantesSetorVertical() - 1)) {
 			throw new QuadranteInvalidoException();
 		}
 
