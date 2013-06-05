@@ -1,6 +1,8 @@
 package br.com.concursos.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
@@ -62,14 +64,14 @@ public class Tabuleiro<T> {
 	 */
 	public List<Quadrante<T>> getQuadrantesSetorVertical(int coluna) {
 		List<Quadrante<T>> quadrantesVerticais = new ArrayList<Quadrante<T>>();
-		
+
 		for (int i = 0; i < getTotalQuadrantesSetorVertical(); i++) {
 			quadrantesVerticais.add(quadrantes[i][coluna]);
 		}
 
 		return quadrantesVerticais;
 	}
-	
+
 	/**
 	 * Altera todos os titulos da coluna na Vertical do Tabuleiro.
 	 * 
@@ -78,7 +80,7 @@ public class Tabuleiro<T> {
 	 */
 	public void setTituloQuadrantesSetorVertical(int coluna, Object tituloColuna) {
 		List<Quadrante<T>> quadrantesVerticais = getQuadrantesSetorVertical(coluna);
-		
+
 		for (int i = 0; i < quadrantesVerticais.size(); i++) {
 			quadrantesVerticais.get(i).setTituloColuna(tituloColuna);
 		}
@@ -92,14 +94,14 @@ public class Tabuleiro<T> {
 	 */
 	public List<Quadrante<T>> getQuadrantesSetorHorizontal(int linha) {
 		List<Quadrante<T>> quadrantesHorizontais = new ArrayList<Quadrante<T>>();
-		
+
 		for (int j = 0; j < getTotalQuadrantesSetorHorizontal(); j++) {
 			quadrantesHorizontais.add(quadrantes[linha][j]);
 		}
 
 		return quadrantesHorizontais;
 	}
-	
+
 	/**
 	 * Altera todos os titulos da linha na Horizontal do Tabuleiro.
 	 * 
@@ -108,9 +110,43 @@ public class Tabuleiro<T> {
 	 */
 	public void setTituloQuadrantesSetorHorizontal(int linha, Object tituloLinha) {
 		List<Quadrante<T>> quadrantesHorizontais = getQuadrantesSetorHorizontal(linha);
-		
+
 		for (int i = 0; i < quadrantesHorizontais.size(); i++) {
 			quadrantesHorizontais.get(i).setTituloLinha(tituloLinha);
+		}
+	}
+
+	/**
+	 * Altera todos os titulos randomicamente das linhas na Horizontal do Tabuleiro.
+	 * 
+	 * @param objetos
+	 */
+	public void setTitulosQuadrantesSetorHorizontalRandomico(Object[] objetos) {
+		for (int i = 0; i < getTotalQuadrantesSetorHorizontal(); i++) {
+			List<Quadrante<T>> quadrantesHorizontais = this.getQuadrantesSetorHorizontal(i);
+
+			Collections.shuffle(Arrays.asList(objetos));
+
+			for (int j = 0; j < objetos.length; j++) {
+				quadrantesHorizontais.get(i).setTituloLinha(objetos[j]);
+			}
+		}
+	}
+
+	/**
+	 * Altera todos os titulos randomicamente das colunas na Vertical do Tabuleiro.
+	 * 
+	 * @param objetos
+	 */
+	public void setTitulosQuadrantesSetorVerticalRandomico(Object[] objetos) {
+		for (int i = 0; i < getTotalQuadrantesSetorVertical(); i++) {
+			List<Quadrante<T>> quadrantesVerticais = this.getQuadrantesSetorVertical(i);
+
+			Collections.shuffle(Arrays.asList(objetos));
+
+			for (int j = 0; j < objetos.length; j++) {
+				quadrantesVerticais.get(i).setTituloColuna(objetos[j]);
+			}
 		}
 	}
 

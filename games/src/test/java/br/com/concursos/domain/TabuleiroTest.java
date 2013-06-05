@@ -52,18 +52,32 @@ public class TabuleiroTest {
 	public void testGetQuadrantesSetorHorizontal() {
 		assertEquals("Quadrantes horizontal (x) = 3", 3, tabuleiro.getQuadrantesSetorHorizontal(0).size());
 	}
-	
+
+	@Test
+	public void testGetQuadrantesSetorVertical() {
+		assertEquals("Quadrantes vertical (y) = 4", 4, tabuleiro.getQuadrantesSetorVertical(0).size());
+	}
+
+	@Test
+	public void testSetTitulosQuadrantesSetorHorizontalRandomico() {
+		Object[] objetos = { "Teste1", "Teste2", "Teste3", "Teste4" };
+		tabuleiro.setTitulosQuadrantesSetorHorizontalRandomico(objetos);
+		assertNotNull("Titulo das linhas dos Quadrantes Horizontais", tabuleiro.getQuadrantesSetorHorizontal(0).get(0).getTituloLinha());
+	}
+
+	@Test
+	public void testSetTitulosQuadrantesSetorVerticalRandomico() {
+		Object[] objetos = { "Teste1", "Teste2", "Teste3"};
+		tabuleiro.setTitulosQuadrantesSetorVerticalRandomico(objetos);
+		assertNotNull("Titulo das colunas dos Quadrantes Verticais", tabuleiro.getQuadrantesSetorVertical(0).get(0).getTituloColuna());
+	}
+
 	@Test
 	public void testSetTituloQuadrantesSetorHoriozontal() {
 		tabuleiro.setTituloQuadrantesSetorHorizontal(0, "Teste");
 		assertEquals("Titulo da linha dos Quadrantes Horizontais", "Teste", tabuleiro.getQuadrantesSetorHorizontal(0).get(0).getTituloLinha());
 	}
 
-	@Test
-	public void testGetQuadrantesSetorVertical() {
-		assertEquals("Quadrantes vertical (y) = 4", 4, tabuleiro.getQuadrantesSetorVertical(0).size());
-	}
-	
 	@Test
 	public void testSetTituloQuadrantesSetorVertical() {
 		tabuleiro.setTituloQuadrantesSetorVertical(0, "Teste");

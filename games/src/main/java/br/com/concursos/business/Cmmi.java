@@ -68,6 +68,8 @@ public class Cmmi {
 
 		}
 	}
+	
+	
 
 	/**
 	 * Verifica se os processos estao no devido lugar do Tabuleiro.
