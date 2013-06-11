@@ -27,7 +27,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<primefaces.version>3.5</primefaces.version>
-		<primefaces.extensions.version>0.7.0</primefaces.extensions.version>
+		<primefaces.extensions.version>0.7.1</primefaces.extensions.version>
+		<primefaces.themes.version>1.0.10</primefaces.themes.version>
 	</properties>
 
 	<repositories>
@@ -119,7 +120,7 @@
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>all-themes</artifactId>
-			<version>1.0.9</version>
+			<version>${primefaces.themes.version}</version>
 		</dependency>
 
 		<!-- JUnit -->
