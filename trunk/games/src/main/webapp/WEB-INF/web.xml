@@ -5,7 +5,7 @@
 	<display-name>games</display-name>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>eggplant</param-value>
+		<param-value>delta</param-value>
 	</context-param>
 	<!-- JSF mapping -->
 	<servlet>

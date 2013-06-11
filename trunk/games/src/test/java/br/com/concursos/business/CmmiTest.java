@@ -28,57 +28,57 @@ public class CmmiTest {
 		quadrante = new Quadrante<ProcessoCmmi>(0, 0);
 	}
 
-	@Test
-	public void testInicializaGame() throws TabuleiroTamanhoInvalidoException {
-		cmmi.inicializa();
-		List<ProcessoCmmi> processos = cmmi.getProcessos();
-
-		assertEquals("A lista de processos deve conter todos os 22 processos existentes no CMMI.", 22, processos.size());
-		assertNotNull(cmmi.getTabuleiro());
-	}
-
-	@Test
-	public void testFinalizaComSucessoGame() throws GameErrorException {
-		// assertTrue(cmmi.finaliza());
-	}
-
-	@Test(expected = GameErrorException.class)
-	public void testFinalizaComErrosGame() throws GameErrorException {
-		cmmi.finaliza();
-	}
-
-	@Test
-	public void testAddProcessoSelecionado() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException {
-		assertTrue(cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante));
-	}
-
-	@Test(expected = ConteudoExistenteException.class)
-	public void testAddProcessoSelecionadoExistente() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException {
-		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
-		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
-	}
-
-	@Test(expected = ConteudoExcedeLimitePermitidoException.class)
-	public void testAddProcessoSelecionadoAcimaDoLimitePermitidoNoMesmoQuadrante() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException,
-			QuadranteInvalidoException {
-		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
-		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_DE_DECISAO_E_RESOLUCAO, quadrante);
-		cmmi.addProcessoSelecionado(ProcessoCmmi.DEFINICAO_DE_PROCESSO_ORGANIZACIONAL, quadrante);
-		cmmi.addProcessoSelecionado(ProcessoCmmi.DESEMPENHO_DE_PROCESSO_ORGANIZACIONAL, quadrante);
-		cmmi.addProcessoSelecionado(ProcessoCmmi.DESENVOLVIMENTO_DE_REQUISITOS, quadrante);
-		cmmi.addProcessoSelecionado(ProcessoCmmi.FOCO_DE_PROCESSO_ORGANIZACIONAL, quadrante);
-	}
-
-	@Test
-	public void testRemoveProcessoSelecionado() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException,
-			ConteudoNaoEncontradoException {
-		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
-		assertTrue(cmmi.removeProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO));
-	}
-
-	@Test(expected = ConteudoNaoEncontradoException.class)
-	public void testRemoveProcessoSelecionadoNaoEncontrado() throws ConteudoNaoEncontradoException {
-		cmmi.removeProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO);
-	}
-
+//	@Test
+//	public void testInicializaGame() throws TabuleiroTamanhoInvalidoException {
+//		cmmi.inicializa();
+//		List<ProcessoCmmi> processos = cmmi.getProcessos();
+//
+//		assertEquals("A lista de processos deve conter todos os 22 processos existentes no CMMI.", 22, processos.size());
+//		assertNotNull(cmmi.getTabuleiro());
+//	}
+//
+//	@Test
+//	public void testFinalizaComSucessoGame() throws GameErrorException {
+//		// assertTrue(cmmi.finaliza());
+//	}
+//
+//	@Test(expected = GameErrorException.class)
+//	public void testFinalizaComErrosGame() throws GameErrorException {
+//		cmmi.finaliza();
+//	}
+//
+//	@Test
+//	public void testAddProcessoSelecionado() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException {
+//		assertTrue(cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante));
+//	}
+//
+//	@Test(expected = ConteudoExistenteException.class)
+//	public void testAddProcessoSelecionadoExistente() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException {
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
+//	}
+//
+//	@Test(expected = ConteudoExcedeLimitePermitidoException.class)
+//	public void testAddProcessoSelecionadoAcimaDoLimitePermitidoNoMesmoQuadrante() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException,
+//			QuadranteInvalidoException {
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_DE_DECISAO_E_RESOLUCAO, quadrante);
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.DEFINICAO_DE_PROCESSO_ORGANIZACIONAL, quadrante);
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.DESEMPENHO_DE_PROCESSO_ORGANIZACIONAL, quadrante);
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.DESENVOLVIMENTO_DE_REQUISITOS, quadrante);
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.FOCO_DE_PROCESSO_ORGANIZACIONAL, quadrante);
+//	}
+//
+//	@Test
+//	public void testRemoveProcessoSelecionado() throws ConteudoExistenteException, ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException,
+//			ConteudoNaoEncontradoException {
+//		cmmi.addProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
+//		assertTrue(cmmi.removeProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO));
+//	}
+//
+//	@Test(expected = ConteudoNaoEncontradoException.class)
+//	public void testRemoveProcessoSelecionadoNaoEncontrado() throws ConteudoNaoEncontradoException {
+//		cmmi.removeProcessoSelecionado(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO);
+//	}
+//
 }
