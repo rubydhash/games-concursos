@@ -1,5 +1,6 @@
 package br.com.concursos.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.concursos.enumeration.TipoSetor;
@@ -8,11 +9,13 @@ public class Setor<T> {
 
 	private int numero;
 	private TipoSetor tipo;
-	private String titulo;
+	private Object titulo;
 	private List<Quadrante<T>> quadrantes;
 
-	public Setor(int numero) {
+	public Setor(int numero, TipoSetor tipo) {
 		this.numero = numero;
+		this.tipo = tipo;
+		this.quadrantes = new ArrayList<Quadrante<T>>();
 	}
 
 	public int getNumero() {
@@ -31,11 +34,11 @@ public class Setor<T> {
 		this.tipo = tipo;
 	}
 
-	public String getTitulo() {
+	public Object getTitulo() {
 		return titulo;
 	}
 
-	public void setTitulo(String titulo) {
+	public void setTitulo(Object titulo) {
 		this.titulo = titulo;
 	}
 
@@ -45,6 +48,10 @@ public class Setor<T> {
 
 	public void setQuadrantes(List<Quadrante<T>> quadrantes) {
 		this.quadrantes = quadrantes;
+	}
+
+	public void addQuadrante(Quadrante<T> quadrante) {
+		this.quadrantes.add(quadrante);
 	}
 
 	@SuppressWarnings("unchecked")

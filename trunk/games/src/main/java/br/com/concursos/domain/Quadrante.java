@@ -7,18 +7,18 @@ public class Quadrante<T> {
 
 	private int linha;
 	private int coluna;
-	private List<T> conteudo;
+	private List<T> conteudos;
 
 	public Quadrante(int linha, int coluna) {
 		this.setLinha(linha);
 		this.setColuna(coluna);
-		this.conteudo = new ArrayList<T>();
+		this.conteudos = new ArrayList<T>();
 	}
 
-	public Quadrante(int linha, int coluna, List<T> conteudo) {
+	public Quadrante(int linha, int coluna, List<T> conteudos) {
 		this.setLinha(linha);
 		this.setColuna(coluna);
-		this.conteudo = conteudo;
+		this.conteudos = conteudos;
 	}
 
 	public int getLinha() {
@@ -37,8 +37,24 @@ public class Quadrante<T> {
 		this.coluna = coluna;
 	}
 
-	public List<T> getConteudo() {
-		return conteudo;
+	public List<T> getConteudos() {
+		return conteudos;
+	}
+
+	public boolean add(T t) {
+		return conteudos.add(t);
+	}
+
+	public boolean remove(T t) {
+		return conteudos.remove(t);
+	}
+
+	public boolean contains(T t) {
+		return conteudos.contains(t);
+	}
+
+	public int getTotalConteudo() {
+		return conteudos.size();
 	}
 
 	@Override

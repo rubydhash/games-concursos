@@ -17,26 +17,34 @@
 </h:head>
 <h:body>
 
-	<pe:layout fullPage="true">
-		<pe:layoutPane id="north" position="north" resizable="false"
+	<p:growl id="messages" globalOnly="true" />
+	<pe:tooltip global="true" myPosition="left center"
+		atPosition="right center" />
+
+	<div id="modals">
+		<ui:insert name="modals" />
+	</div>
+
+	<p:layout fullPage="true">
+		<p:layoutUnit id="north" position="north" resizable="false"
 			closable="false" size="50">
 			<ui:include src="/pages/menu.xhtml" />
-		</pe:layoutPane>
-		<pe:layoutPane position="east" resizable="false" closable="true"
+		</p:layoutUnit>
+		<p:layoutUnit position="east" resizable="false" closable="true"
 			size="350">
 			<ui:insert name="content-east" />
-		</pe:layoutPane>
-		<pe:layoutPane id="center" position="center" resizable="false"
+		</p:layoutUnit>
+		<p:layoutUnit id="center" position="center" resizable="false"
 			closable="false">
 			<ui:insert name="content-center" />
-		</pe:layoutPane>
-		<pe:layoutPane id="south" position="south" resizable="false"
-			closable="false" size="40">
-			<p:panel style="text-align: center;">
+		</p:layoutUnit>
+		<p:layoutUnit id="south" position="south" resizable="false"
+			closable="false" size="15">
+			<div style="text-align: center;">
 				<h:outputText value="#{messages['bottom']}" />
-			</p:panel>
-		</pe:layoutPane>
-	</pe:layout>
+			</div>
+		</p:layoutUnit>
+	</p:layout>
 
 	<p:ajaxStatus onstart="statusDialog.show();"
 		onsuccess="statusDialog.hide();" />
