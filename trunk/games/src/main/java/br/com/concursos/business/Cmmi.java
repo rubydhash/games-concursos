@@ -1,6 +1,7 @@
 package br.com.concursos.business;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Named;
@@ -11,12 +12,14 @@ import br.com.concursos.enumeration.GrupoProcessosCmmi;
 import br.com.concursos.enumeration.NivelCmmi;
 import br.com.concursos.enumeration.NivelDificuldade;
 import br.com.concursos.enumeration.ProcessoCmmi;
+import br.com.concursos.enumeration.TipoSetor;
 import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
 import br.com.concursos.exception.ConteudoNaoEncontradoException;
 import br.com.concursos.exception.GameErrorException;
 import br.com.concursos.exception.QuadranteInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
+import br.com.concursos.exception.TitulosExcedemLimiteSetoresException;
 
 @Named
 public class Cmmi {
@@ -25,9 +28,9 @@ public class Cmmi {
 	private Tabuleiro<ProcessoCmmi> tabuleiro;
 	private NivelDificuldade nivelDificuldade;
 
-//	public Cmmi() throws TabuleiroTamanhoInvalidoException {
-//		inicializa();
-//	}
+	public Cmmi() throws TabuleiroTamanhoInvalidoException, TitulosExcedemLimiteSetoresException {
+		inicializa();
+	}
 
 	public List<ProcessoCmmi> getProcessos() {
 		return processos;
@@ -37,88 +40,84 @@ public class Cmmi {
 		return tabuleiro;
 	}
 
-//	public void inicializa() throws TabuleiroTamanhoInvalidoException {
-//		tabuleiro = new Tabuleiro<ProcessoCmmi>(4, 4);
-//		processos = new ArrayList<ProcessoCmmi>();
-//
-//		ProcessoCmmi[] arrayProcessos = ProcessoCmmi.values();
-//		for (int i = 0; i < arrayProcessos.length; i++) {
-//			processos.add(arrayProcessos[i]);
-//		}
-//
-//		nivelDificuldade = NivelDificuldade.FACIL;
-//		montaTabuleiro();
-//
-//	}
+	public void inicializa() throws TabuleiroTamanhoInvalidoException, TitulosExcedemLimiteSetoresException {
+		tabuleiro = new Tabuleiro<ProcessoCmmi>(4, 4);
+		processos = new ArrayList<ProcessoCmmi>();
+		processos.addAll(Arrays.asList(ProcessoCmmi.values()));
 
-//	private void montaTabuleiro() {
-//		if (this.nivelDificuldade.equals(NivelDificuldade.FACIL)) {
-//			tabuleiro.setTituloQuadrantesSetorHorizontal(0, GrupoProcessosCmmi.GESTAO_DE_PROCESSOS);
-//			tabuleiro.setTituloQuadrantesSetorHorizontal(1, GrupoProcessosCmmi.GESTAO_DE_PROJETOS);
-//			tabuleiro.setTituloQuadrantesSetorHorizontal(2, GrupoProcessosCmmi.ENGENHARIA);
-//			tabuleiro.setTituloQuadrantesSetorHorizontal(3, GrupoProcessosCmmi.SUPORTE);
-//
-//			tabuleiro.setTituloQuadrantesSetorVertical(0, NivelCmmi.NIVEL_2);
-//			tabuleiro.setTituloQuadrantesSetorVertical(1, NivelCmmi.NIVEL_3);
-//			tabuleiro.setTituloQuadrantesSetorVertical(2, NivelCmmi.NIVEL_4);
-//			tabuleiro.setTituloQuadrantesSetorVertical(3, NivelCmmi.NIVEL_5);
-//		} else if (this.nivelDificuldade.equals(NivelDificuldade.MEDIO)) {
-//
-//		} else if (this.nivelDificuldade.equals(NivelDificuldade.DIFICIL)) {
-//
-//		}
-//	}
-//	
-//	
-//
-//	/**
-//	 * Verifica se os processos estao no devido lugar do Tabuleiro.
-//	 * 
-//	 * @return {@link Boolean}
-//	 * @throws GameErrorException
-//	 */
-//	public boolean finaliza() throws GameErrorException {
-//		if (verificaTabuleiro()) {
-//			throw new GameErrorException();
-//		}
-//
-//		return true;
-//	}
-//
-//	private boolean verificaTabuleiro() {
-//		return true;
-//	}
-//
-//	/**
-//	 * Adiciona o processo no Tabuleiro e remove do painel de processos disponiveis.
-//	 * 
-//	 * @param processoCmmi
-//	 * @param quadrante
-//	 * @return {@link Boolean}
-//	 * @throws ConteudoExistenteException
-//	 * @throws ConteudoExcedeLimitePermitidoException
-//	 * @throws QuadranteInvalidoException
-//	 */
-//	public boolean addProcessoSelecionado(ProcessoCmmi processoCmmi, Quadrante<ProcessoCmmi> quadrante) throws ConteudoExistenteException,
-//			ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException {
-//		tabuleiro.addConteudo(processoCmmi, quadrante);
-//		processos.remove(processoCmmi);
-//
-//		return true;
-//	}
-//
-//	/**
-//	 * Remove o processo do Tabuleiro e adiciona no painel de processos disponiveis.
-//	 * 
-//	 * @param processoCmmi
-//	 * @return {@link Boolean}
-//	 * @throws ConteudoNaoEncontradoException
-//	 */
-//	public boolean removeProcessoSelecionado(ProcessoCmmi processoCmmi) throws ConteudoNaoEncontradoException {
-//		tabuleiro.removeConteudo(processoCmmi);
-//		processos.add(processoCmmi);
-//
-//		return true;
-//	}
-//
+		nivelDificuldade = NivelDificuldade.FACIL;
+		montaTabuleiro();
+	}
+
+	private void montaTabuleiro() throws TitulosExcedemLimiteSetoresException {
+		if (this.nivelDificuldade.equals(NivelDificuldade.FACIL)) {
+			tabuleiro.setTitulos(GrupoProcessosCmmi.values(), TipoSetor.HORIZONTAL, false);
+			tabuleiro.setTitulos(NivelCmmi.values(), TipoSetor.VERTICAL, false);
+		} else if (this.nivelDificuldade.equals(NivelDificuldade.MEDIO)) {
+			tabuleiro.setTitulos(GrupoProcessosCmmi.values(), TipoSetor.HORIZONTAL, true);
+			tabuleiro.setTitulos(NivelCmmi.values(), TipoSetor.VERTICAL, true);
+		} else if (this.nivelDificuldade.equals(NivelDificuldade.DIFICIL)) {
+			/** TODO Misturar os objetos */
+			// tabuleiro.setTitulos(GrupoProcessosCmmi.values(), TipoSetor.HORIZONTAL, true);
+			// tabuleiro.setTitulos(NivelCmmi.values(), TipoSetor.VERTICAL, true);
+		}
+	}
+
+	/**
+	 * Verifica se os processos estao no devido lugar do Tabuleiro.
+	 * 
+	 * @return {@link Boolean}
+	 * @throws GameErrorException
+	 */
+	public boolean finaliza() throws GameErrorException {
+		if (verificaTabuleiro()) {
+			throw new GameErrorException();
+		}
+
+		return true;
+	}
+
+	private boolean verificaTabuleiro() {
+		return true;
+	}
+
+	/**
+	 * Adiciona o processo no Tabuleiro e remove do painel de processos disponiveis.
+	 * 
+	 * @param processoCmmi
+	 * @param quadrante
+	 * @return {@link Boolean}
+	 * @throws ConteudoExistenteException
+	 * @throws ConteudoExcedeLimitePermitidoException
+	 * @throws QuadranteInvalidoException
+	 */
+	public boolean addProcessoSelecionado(ProcessoCmmi processoCmmi, Quadrante<ProcessoCmmi> quadrante) throws ConteudoExistenteException,
+			ConteudoExcedeLimitePermitidoException, QuadranteInvalidoException {
+
+		quadrante = tabuleiro.getQuadrante(quadrante);
+
+		if (quadrante.getConteudos().size() >= 5) {
+			throw new ConteudoExcedeLimitePermitidoException();
+		}
+
+		tabuleiro.add(processoCmmi, quadrante);
+		processos.remove(processoCmmi);
+
+		return true;
+	}
+
+	/**
+	 * Remove o processo do Tabuleiro e adiciona no painel de processos disponiveis.
+	 * 
+	 * @param processoCmmi
+	 * @return {@link Boolean}
+	 * @throws ConteudoNaoEncontradoException
+	 */
+	public boolean removeProcessoSelecionado(ProcessoCmmi processoCmmi) throws ConteudoNaoEncontradoException {
+		tabuleiro.remove(processoCmmi);
+		processos.add(processoCmmi);
+
+		return true;
+	}
+
 }

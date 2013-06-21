@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 import br.com.concursos.enumeration.TipoSetor;
-import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
 import br.com.concursos.exception.ConteudoNaoEncontradoException;
 import br.com.concursos.exception.QuadranteInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
+import br.com.concursos.exception.TitulosExcedemLimiteSetoresException;
 
 public class Tabuleiro<T> {
 
@@ -66,7 +66,7 @@ public class Tabuleiro<T> {
 
 		return setoresVerticais.get(0).getQuadrantes().size();
 	}
-	
+
 	/**
 	 * Retorna o total de Quadrantes por Tipo de Setor (Horizontal ou Vertical)
 	 * 
@@ -87,15 +87,7 @@ public class Tabuleiro<T> {
 	 * @return {@link List} {@link Quadrante}
 	 */
 	public List<Quadrante<T>> getQuadrantes(Setor<T> setor) {
-		List<Quadrante<T>> quadrantes = new ArrayList<Quadrante<T>>();
-
-		if (setor.getTipo().equals(TipoSetor.HORIZONTAL)) {
-			quadrantes = setoresHorizontais.get(setor.getNumero()).getQuadrantes();
-		} else {
-			quadrantes = setoresVerticais.get(setor.getNumero()).getQuadrantes();
-		}
-
-		return quadrantes;
+		return this.getSetor(setor.getTipo()).get(setor.getNumero()).getQuadrantes();
 	}
 
 	/**
@@ -120,40 +112,41 @@ public class Tabuleiro<T> {
 	}
 
 	/**
+	 * @param tipoSetor
+	 * @return setoresHorizontais ou setoresVerticais
+	 */
+	public List<Setor<T>> getSetor(TipoSetor tipoSetor) {
+		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
+			return setoresHorizontais;
+		} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
+			return setoresVerticais;
+		}
+
+		throw new IllegalArgumentException();
+	}
+
+	/**
 	 * Altera todos os títulos de um determinado Setor do Tabuleiro.
 	 * 
 	 * @param titulos
 	 * @param tipoSetor
+	 * @param boolean
+	 * @throws TitulosExcedemLimiteSetoresException
 	 */
-	public void setTitulos(Object[] titulos, TipoSetor tipoSetor) {
-		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
-			if (titulos.length != setoresHorizontais.size()) {
-				throw new IllegalArgumentException();
-			}
+	public void setTitulos(Object[] titulos, TipoSetor tipoSetor, boolean randomico) throws TitulosExcedemLimiteSetoresException {
+		List<Setor<T>> setores = getSetor(tipoSetor);
 
-			for (int i = 0; i < titulos.length; i++) {
-				setoresHorizontais.get(i).setTitulo(titulos[i]);
-			}
-		} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
-			if (titulos.length != setoresVerticais.size()) {
-				throw new IllegalArgumentException();
-			}
-
-			for (int i = 0; i < titulos.length; i++) {
-				setoresVerticais.get(i).setTitulo(titulos[i]);
-			}
+		if (randomico) {
+			Collections.shuffle(Arrays.asList(titulos));
 		}
-	}
 
-	/**
-	 * Altera todos os títulos randomicamente de um determinado Setor do Tabuleiro.
-	 * 
-	 * @param titulos
-	 * @param tipoSetor
-	 */
-	public void setTitulosRandomico(Object[] titulos, TipoSetor tipoSetor) {
-		Collections.shuffle(Arrays.asList(titulos));
-		this.setTitulos(titulos, tipoSetor);
+		if (titulos.length > setores.size()) {
+			throw new TitulosExcedemLimiteSetoresException();
+		}
+
+		for (int i = 0; i < titulos.length; i++) {
+			setores.get(i).setTitulo(titulos[i]);
+		}
 	}
 
 	/**
@@ -253,19 +246,13 @@ public class Tabuleiro<T> {
 	 * @return {@link Boolean}
 	 * @throws ConteudoExistenteException
 	 * @throws QuadranteInvalidoException
-	 * @throws ConteudoExcedeLimitePermitidoException
 	 */
-	public boolean add(T conteudo, Quadrante<T> quadrante) throws ConteudoExistenteException, QuadranteInvalidoException,
-			ConteudoExcedeLimitePermitidoException {
+	public boolean add(T conteudo, Quadrante<T> quadrante) throws ConteudoExistenteException, QuadranteInvalidoException {
 		quadrante = getQuadrante(quadrante);
 
 		if ((quadrante.getLinha() < 0 || quadrante.getLinha() > getTotalQuadrantes(TipoSetor.HORIZONTAL) - 1)
 				|| (quadrante.getColuna() < 0 || quadrante.getColuna() > getTotalQuadrantes(TipoSetor.VERTICAL) - 1)) {
 			throw new QuadranteInvalidoException();
-		}
-
-		if (quadrante.getConteudos().size() >= 5) {
-			throw new ConteudoExcedeLimitePermitidoException();
 		}
 
 		if (contains(conteudo)) {
