@@ -1,7 +1,7 @@
 package br.com.concursos.enumeration;
 
 public enum NivelDificuldade {
-	FACIL("Fácil"), MEDIO("Médio"), DIFICIL("Difícil");
+	FACIL("Fácil"), MEDIO("Médio"), DIFICIL("Difícil"), MUITO_DIFICIL("Muito Difícil");
 
 	private String descricao;
 
