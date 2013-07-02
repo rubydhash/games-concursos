@@ -3,19 +3,19 @@ package br.com.concursos.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quadrante<T> {
+public class Quadrante {
 
 	private int linha;
 	private int coluna;
-	private List<T> conteudos;
+	private List<Conteudo> conteudos;
 
 	public Quadrante(int linha, int coluna) {
 		this.setLinha(linha);
 		this.setColuna(coluna);
-		this.conteudos = new ArrayList<T>();
+		this.conteudos = new ArrayList<Conteudo>();
 	}
 
-	public Quadrante(int linha, int coluna, List<T> conteudos) {
+	public Quadrante(int linha, int coluna, List<Conteudo> conteudos) {
 		this.setLinha(linha);
 		this.setColuna(coluna);
 		this.conteudos = conteudos;
@@ -37,20 +37,20 @@ public class Quadrante<T> {
 		this.coluna = coluna;
 	}
 
-	public List<T> getConteudos() {
+	public List<Conteudo> getConteudos() {
 		return conteudos;
 	}
 
-	public boolean add(T t) {
-		return conteudos.add(t);
+	public boolean add(Conteudo conteudo) {
+		return conteudos.add(conteudo);
 	}
 
-	public boolean remove(T t) {
-		return conteudos.remove(t);
+	public boolean remove(Conteudo conteudo) {
+		return conteudos.remove(conteudo);
 	}
 
-	public boolean contains(T t) {
-		return conteudos.contains(t);
+	public boolean contains(Conteudo conteudo) {
+		return conteudos.contains(conteudo);
 	}
 
 	public int getTotalConteudo() {
@@ -62,12 +62,11 @@ public class Quadrante<T> {
 		return "[" + getLinha() + "," + getColuna() + "]";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
-		Quadrante<T> outroQuadrante;
+		Quadrante outroQuadrante;
 		if (obj instanceof Quadrante) {
-			outroQuadrante = (Quadrante<T>) obj;
+			outroQuadrante = (Quadrante) obj;
 
 			if (this.getLinha() == outroQuadrante.getLinha() && this.getColuna() == outroQuadrante.getColuna()) {
 				return true;

@@ -5,17 +5,17 @@ import java.util.List;
 
 import br.com.concursos.enumeration.TipoSetor;
 
-public class Setor<T> {
+public class Setor {
 
 	private int numero;
 	private TipoSetor tipo;
 	private Object titulo;
-	private List<Quadrante<T>> quadrantes;
+	private List<Quadrante> quadrantes;
 
 	public Setor(int numero, TipoSetor tipo) {
 		this.numero = numero;
 		this.tipo = tipo;
-		this.quadrantes = new ArrayList<Quadrante<T>>();
+		this.quadrantes = new ArrayList<Quadrante>();
 	}
 
 	public int getNumero() {
@@ -42,24 +42,23 @@ public class Setor<T> {
 		this.titulo = titulo;
 	}
 
-	public List<Quadrante<T>> getQuadrantes() {
+	public List<Quadrante> getQuadrantes() {
 		return quadrantes;
 	}
 
-	public void setQuadrantes(List<Quadrante<T>> quadrantes) {
+	public void setQuadrantes(List<Quadrante> quadrantes) {
 		this.quadrantes = quadrantes;
 	}
 
-	public void addQuadrante(Quadrante<T> quadrante) {
+	public void addQuadrante(Quadrante quadrante) {
 		this.quadrantes.add(quadrante);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
-		Setor<T> outroSetor;
+		Setor outroSetor;
 		if (obj instanceof Setor) {
-			outroSetor = (Setor<T>) obj;
+			outroSetor = (Setor) obj;
 
 			if (this.getNumero() == outroSetor.getNumero() && this.getTipo().equals(outroSetor.getTipo())) {
 				return true;

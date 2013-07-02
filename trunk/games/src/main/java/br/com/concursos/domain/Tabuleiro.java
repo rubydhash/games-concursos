@@ -6,33 +6,35 @@ import java.util.Collections;
 import java.util.List;
 
 import br.com.concursos.enumeration.TipoSetor;
+import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
 import br.com.concursos.exception.ConteudoNaoEncontradoException;
 import br.com.concursos.exception.QuadranteInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
 import br.com.concursos.exception.TitulosExcedemLimiteSetoresException;
 
-public class Tabuleiro<T> {
+public class Tabuleiro {
 
-	private Quadrante<T>[][] quadrantes;
-	private List<Setor<T>> setoresHorizontais;
-	private List<Setor<T>> setoresVerticais;
+	private int limiteQuadrante = 5;
 
-	@SuppressWarnings("unchecked")
+	private Quadrante[][] quadrantes;
+	private List<Setor> setoresHorizontais;
+	private List<Setor> setoresVerticais;
+
 	public Tabuleiro(int linha, int coluna) throws TabuleiroTamanhoInvalidoException {
 		if (linha == 0 || coluna == 0 || linha < 0 || coluna < 0) {
 			throw new TabuleiroTamanhoInvalidoException();
 		}
 
 		quadrantes = new Quadrante[linha][coluna];
-		setoresHorizontais = new ArrayList<Setor<T>>();
-		setoresVerticais = new ArrayList<Setor<T>>();
+		setoresHorizontais = new ArrayList<Setor>();
+		setoresVerticais = new ArrayList<Setor>();
 		for (int i = 0; i < linha; i++) {
-			Setor<T> setorHorizontal = new Setor<T>(i, TipoSetor.HORIZONTAL);
+			Setor setorHorizontal = new Setor(i, TipoSetor.HORIZONTAL);
 			for (int j = 0; j < coluna; j++) {
-				quadrantes[i][j] = new Quadrante<T>(i, j);
+				quadrantes[i][j] = new Quadrante(i, j);
 				if (i == 0) {
-					Setor<T> setorVertical = new Setor<T>(j, TipoSetor.VERTICAL);
+					Setor setorVertical = new Setor(j, TipoSetor.VERTICAL);
 					setorVertical.addQuadrante(quadrantes[i][j]);
 					setoresVerticais.add(setorVertical);
 				} else {
@@ -44,6 +46,27 @@ public class Tabuleiro<T> {
 			setoresHorizontais.add(setorHorizontal);
 		}
 	}
+
+	// /**
+	// * @return the quadrantes
+	// */
+	// public Quadrante[][] getQuadrantes() {
+	// return quadrantes;
+	// }
+	//
+	// /**
+	// * @return the setoresHorizontais
+	// */
+	// public List<Setor> getSetoresHorizontais() {
+	// return setoresHorizontais;
+	// }
+	//
+	// /**
+	// * @return the setoresVerticais
+	// */
+	// public List<Setor> getSetoresVerticais() {
+	// return setoresVerticais;
+	// }
 
 	/**
 	 * Retorna o total de Quadrantes do Tabuleiro.
@@ -86,40 +109,33 @@ public class Tabuleiro<T> {
 	 * @param Setor
 	 * @return {@link List} {@link Quadrante}
 	 */
-	public List<Quadrante<T>> getQuadrantes(Setor<T> setor) {
+	public List<Quadrante> getQuadrantes(Setor setor) {
 		return this.getSetor(setor.getTipo()).get(setor.getNumero()).getQuadrantes();
-	}
-
-	/**
-	 * @return the quadrantes
-	 */
-	public Quadrante<T>[][] getQuadrantes() {
-		return quadrantes;
-	}
-
-	/**
-	 * @return the setoresHorizontais
-	 */
-	public List<Setor<T>> getSetoresHorizontais() {
-		return setoresHorizontais;
-	}
-
-	/**
-	 * @return the setoresVerticais
-	 */
-	public List<Setor<T>> getSetoresVerticais() {
-		return setoresVerticais;
 	}
 
 	/**
 	 * @param tipoSetor
 	 * @return setoresHorizontais ou setoresVerticais
 	 */
-	public List<Setor<T>> getSetor(TipoSetor tipoSetor) {
+	public List<Setor> getSetor(TipoSetor tipoSetor) {
 		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
 			return setoresHorizontais;
 		} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
 			return setoresVerticais;
+		}
+
+		throw new IllegalArgumentException();
+	}
+
+	/**
+	 * @param setor
+	 * @return setoresHorizontais ou setoresVerticais
+	 */
+	public Setor getSetor(Setor setor) {
+		if (setor.getTipo().equals(TipoSetor.HORIZONTAL)) {
+			return setoresHorizontais.get(setor.getNumero());
+		} else if (setor.getTipo().equals(TipoSetor.VERTICAL)) {
+			return setoresVerticais.get(setor.getNumero());
 		}
 
 		throw new IllegalArgumentException();
@@ -133,20 +149,32 @@ public class Tabuleiro<T> {
 	 * @param boolean
 	 * @throws TitulosExcedemLimiteSetoresException
 	 */
-	public void setTitulos(Object[] titulos, TipoSetor tipoSetor, boolean randomico) throws TitulosExcedemLimiteSetoresException {
-		List<Setor<T>> setores = getSetor(tipoSetor);
+	public void setTitulos(List<?> titulos, TipoSetor tipoSetor, boolean randomico) throws TitulosExcedemLimiteSetoresException {
+		List<Setor> setores = getSetor(tipoSetor);
 
 		if (randomico) {
 			Collections.shuffle(Arrays.asList(titulos));
 		}
 
-		if (titulos.length > setores.size()) {
+		if (titulos.size() > setores.size()) {
 			throw new TitulosExcedemLimiteSetoresException();
 		}
 
-		for (int i = 0; i < titulos.length; i++) {
-			setores.get(i).setTitulo(titulos[i]);
+		for (int i = 0; i < titulos.size(); i++) {
+			setores.get(i).setTitulo(titulos.get(i));
 		}
+	}
+
+	/**
+	 * Altera o título de um determinado Setor do Tabuleiro.
+	 * 
+	 * @param titulo
+	 * @param setor
+	 */
+	public void setTitulo(Object titulo, Setor setor) {
+		setor = getSetor(setor);
+
+		setor.setTitulo(titulo);
 	}
 
 	/**
@@ -171,7 +199,7 @@ public class Tabuleiro<T> {
 	 * @param conteudo
 	 * @return {@link Boolean}
 	 */
-	public boolean contains(T conteudo) {
+	public boolean contains(Conteudo conteudo) {
 		for (int i = 0; i < quadrantes.length; i++) {
 			for (int j = 0; j < quadrantes[i].length; j++) {
 				if (quadrantes[i][j].contains(conteudo)) {
@@ -190,7 +218,7 @@ public class Tabuleiro<T> {
 	 * @return {@link Quadrante}
 	 * @throws ConteudoNaoEncontradoException
 	 */
-	public Quadrante<T> getQuadrante(T conteudo) throws ConteudoNaoEncontradoException {
+	public Quadrante getQuadrante(Conteudo conteudo) throws ConteudoNaoEncontradoException {
 		if (!this.contains(conteudo)) {
 			throw new ConteudoNaoEncontradoException();
 		}
@@ -214,7 +242,7 @@ public class Tabuleiro<T> {
 	 * @return {@link Quadrante}
 	 * @throws QuadranteInvalidoException
 	 */
-	public Quadrante<T> getQuadrante(int linha, int coluna) throws QuadranteInvalidoException {
+	public Quadrante getQuadrante(int linha, int coluna) throws QuadranteInvalidoException {
 		if ((linha < 0 || coluna > getTotalQuadrantes(TipoSetor.HORIZONTAL) - 1) || (linha < 0 || coluna > getTotalQuadrantes(TipoSetor.VERTICAL) - 1)) {
 			throw new QuadranteInvalidoException();
 		}
@@ -229,7 +257,7 @@ public class Tabuleiro<T> {
 	 * @return {@link Quadrante}
 	 * @throws QuadranteInvalidoException
 	 */
-	public Quadrante<T> getQuadrante(Quadrante<T> quadrante) throws QuadranteInvalidoException {
+	public Quadrante getQuadrante(Quadrante quadrante) throws QuadranteInvalidoException {
 		if ((quadrante.getLinha() < 0 || quadrante.getColuna() > getTotalQuadrantes(TipoSetor.HORIZONTAL) - 1)
 				|| (quadrante.getLinha() < 0 || quadrante.getColuna() > getTotalQuadrantes(TipoSetor.VERTICAL) - 1)) {
 			throw new QuadranteInvalidoException();
@@ -246,9 +274,15 @@ public class Tabuleiro<T> {
 	 * @return {@link Boolean}
 	 * @throws ConteudoExistenteException
 	 * @throws QuadranteInvalidoException
+	 * @throws ConteudoExcedeLimitePermitidoException
 	 */
-	public boolean add(T conteudo, Quadrante<T> quadrante) throws ConteudoExistenteException, QuadranteInvalidoException {
+	public boolean add(Conteudo conteudo, Quadrante quadrante) throws ConteudoExistenteException, QuadranteInvalidoException,
+			ConteudoExcedeLimitePermitidoException {
 		quadrante = getQuadrante(quadrante);
+
+		if (quadrante.getConteudos().size() >= limiteQuadrante) {
+			throw new ConteudoExcedeLimitePermitidoException();
+		}
 
 		if ((quadrante.getLinha() < 0 || quadrante.getLinha() > getTotalQuadrantes(TipoSetor.HORIZONTAL) - 1)
 				|| (quadrante.getColuna() < 0 || quadrante.getColuna() > getTotalQuadrantes(TipoSetor.VERTICAL) - 1)) {
@@ -259,7 +293,6 @@ public class Tabuleiro<T> {
 			throw new ConteudoExistenteException();
 		}
 
-		quadrante = getQuadrante(quadrante.getLinha(), quadrante.getColuna());
 		quadrante.add(conteudo);
 
 		return true;
@@ -273,8 +306,8 @@ public class Tabuleiro<T> {
 	 * @return {@link Boolean}
 	 * @throws ConteudoNaoEncontradoException
 	 */
-	public boolean remove(T conteudo) throws ConteudoNaoEncontradoException {
-		Quadrante<T> quadrante = getQuadrante(conteudo);
+	public boolean remove(Conteudo conteudo) throws ConteudoNaoEncontradoException {
+		Quadrante quadrante = getQuadrante(conteudo);
 		quadrante.remove(conteudo);
 
 		return true;
@@ -292,6 +325,47 @@ public class Tabuleiro<T> {
 		}
 
 		return tabuleiro.toString();
+	}
+
+	public int getLimiteQuadrante() {
+		return limiteQuadrante;
+	}
+
+	public void setLimiteQuadrante(int limiteQuadrante) {
+		this.limiteQuadrante = limiteQuadrante;
+	}
+
+	/**
+	 * Verifica os conteúdos com seus respectivos Quadrantes.
+	 * 
+	 * @param tipoSetor
+	 * @return {@link Boolean} resposta
+	 * 
+	 */
+	public boolean verificaConteudo(TipoSetor tipoSetor) {
+		boolean resposta = true;
+		Object titulo = new Object();
+
+		List<Setor> setores = getSetor(tipoSetor);
+		for (Setor setor : setores) {
+			List<Quadrante> quadrantes = setor.getQuadrantes();
+			for (Quadrante quadrante : quadrantes) {
+				List<Conteudo> conteudos = quadrante.getConteudos();
+				for (Conteudo conteudo : conteudos) {
+					if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
+						titulo = conteudo.getTituloHorizontal();
+					} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
+						titulo = conteudo.getTituloVertical();
+					}
+					if (!setor.getTitulo().equals(titulo)) {
+						conteudo.setInPlace(false);
+						resposta = false;
+					}
+				}
+			}
+		}
+		
+		return resposta;
 	}
 
 }
