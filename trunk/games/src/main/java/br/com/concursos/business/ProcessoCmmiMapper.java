@@ -7,42 +7,27 @@ import java.util.List;
 import br.com.concursos.domain.Processo;
 import br.com.concursos.enumeration.ProcessoCmmi;
 
-public class ProcessoCmmiMapper {
+public class ProcessoCmmiMapper implements Mapper {
 
-	public static List<Processo> getProcessos() {
+	@Override
+	public List<Processo> getProcessos() {
 		List<Processo> processos = new ArrayList<Processo>();
-		
+
 		List<ProcessoCmmi> processosCmmi = new ArrayList<ProcessoCmmi>();
 		processosCmmi.addAll(Arrays.asList(ProcessoCmmi.values()));
 
 		for (ProcessoCmmi processoCmmi : processosCmmi) {
-			Processo processo = new Processo(processoCmmi.getNumero());
-
-			processo.setCodigo(processoCmmi.getCodigo());
-			processo.setNome(processoCmmi.getNome());
-			processo.setNomeOriginal(processoCmmi.getNomeOriginal());
-			processo.setTituloHorizontal(processoCmmi.getGrupoProcessosCmmi());
-			processo.setTituloVertical(processoCmmi.getNivelCmmi());
-
-			processos.add(processo);
+			processos.add(createProcesso(processoCmmi));
 		}
 
 		return processos;
 	}
 
-	public static Processo getProcessoPorProcessoCmmi(ProcessoCmmi processoCmmi) {
-		Processo processo = new Processo(processoCmmi.getNumero());
-
-		processo.setCodigo(processoCmmi.getCodigo());
-		processo.setNome(processoCmmi.getNome());
-		processo.setNomeOriginal(processoCmmi.getNomeOriginal());
-		processo.setTituloHorizontal(processoCmmi.getGrupoProcessosCmmi());
-		processo.setTituloVertical(processoCmmi.getNivelCmmi());
-
-		return processo;
+	public Processo getProcessoPorProcessoCmmi(ProcessoCmmi processoCmmi) {
+		return createProcesso(processoCmmi);
 	}
-	
-	public static ProcessoCmmi getProcessoCmmiPorProcesso(Processo processo) {
+
+	public ProcessoCmmi getProcessoCmmiPorProcesso(Processo processo) {
 		List<ProcessoCmmi> processosCmmi = new ArrayList<ProcessoCmmi>();
 		processosCmmi.addAll(Arrays.asList(ProcessoCmmi.values()));
 
@@ -54,4 +39,18 @@ public class ProcessoCmmiMapper {
 
 		return null;
 	}
+
+	private Processo createProcesso(ProcessoCmmi processoCmmi) {
+		Processo processo = new Processo(processoCmmi.getCodigo());
+
+		processo.setSigla(processoCmmi.getSigla());
+		processo.setNome(processoCmmi.getNome());
+		processo.setNomeOriginal(processoCmmi.getNomeOriginal());
+		processo.setTituloHorizontal(processoCmmi.getGrupoProcessosCmmi());
+		processo.setTituloVertical(processoCmmi.getNivelCmmi());
+		processo.setDescricao(processoCmmi.getDescricao());
+
+		return processo;
+	}
+
 }

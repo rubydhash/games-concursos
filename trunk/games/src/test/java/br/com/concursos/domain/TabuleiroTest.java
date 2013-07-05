@@ -28,14 +28,22 @@ public class TabuleiroTest {
 
 	@Before
 	public void init() throws TabuleiroTamanhoInvalidoException {
-		tabuleiro = new Tabuleiro(4, 3);
+		tabuleiro = new Tabuleiro(new TamanhoTabuleiro(4, 3));
 		quadrante = new Quadrante(0, 0);
 		
 		conteudos = new ArrayList<Conteudo>();
-		conteudos.add(new Conteudo(0));
-		conteudos.add(new Conteudo(1));
-		conteudos.add(new Conteudo(2));
-		conteudos.add(new Conteudo(3));
+		Conteudo conteudo1 = new Conteudo();
+		conteudo1.setCodigo(1);
+		Conteudo conteudo2 = new Conteudo();
+		conteudo2.setCodigo(2);
+		Conteudo conteudo3 = new Conteudo();
+		conteudo3.setCodigo(3);
+		Conteudo conteudo4 = new Conteudo();
+		conteudo4.setCodigo(4);
+		conteudos.add(conteudo1);
+		conteudos.add(conteudo2);
+		conteudos.add(conteudo3);
+		conteudos.add(conteudo4);
 		
 		titulos = new ArrayList<Object>();
 		titulos.add("Teste 0");
@@ -51,12 +59,12 @@ public class TabuleiroTest {
 
 	@Test(expected = TabuleiroTamanhoInvalidoException.class)
 	public void testCriacaoTabuleiroTamanhoInvalido() throws TabuleiroTamanhoInvalidoException {
-		tabuleiro = new Tabuleiro(-1, -1);
+		tabuleiro = new Tabuleiro(new TamanhoTabuleiro(-1, -1));
 	}
 
 	@Test(expected = TabuleiroTamanhoInvalidoException.class)
 	public void testCriacaoTabuleiroTamanhoInvalidoLimiteZero() throws TabuleiroTamanhoInvalidoException {
-		tabuleiro = new Tabuleiro(0, 4);
+		tabuleiro = new Tabuleiro(new TamanhoTabuleiro(0, 4));
 	}
 
 	@Test
@@ -131,12 +139,24 @@ public class TabuleiroTest {
 	@Test(expected = ConteudoExcedeLimitePermitidoException.class)
 	public void testAddProcessoSelecionadoAcimaDoLimitePermitidoNoMesmoQuadrante() throws ConteudoExistenteException,
 			QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(new Conteudo(0), quadrante);
-		tabuleiro.add(new Conteudo(1), quadrante);
-		tabuleiro.add(new Conteudo(2), quadrante);
-		tabuleiro.add(new Conteudo(3), quadrante);
-		tabuleiro.add(new Conteudo(4), quadrante);
-		tabuleiro.add(new Conteudo(5), quadrante);
+		Conteudo conteudo1 = new Conteudo();
+		conteudo1.setCodigo(1);
+		Conteudo conteudo2 = new Conteudo();
+		conteudo2.setCodigo(2);
+		Conteudo conteudo3 = new Conteudo();
+		conteudo3.setCodigo(3);
+		Conteudo conteudo4 = new Conteudo();
+		conteudo4.setCodigo(4);
+		Conteudo conteudo5 = new Conteudo();
+		conteudo5.setCodigo(5);
+		Conteudo conteudo6 = new Conteudo();
+		conteudo6.setCodigo(6);
+		tabuleiro.add(conteudo1, quadrante);
+		tabuleiro.add(conteudo2, quadrante);
+		tabuleiro.add(conteudo3, quadrante);
+		tabuleiro.add(conteudo4, quadrante);
+		tabuleiro.add(conteudo5, quadrante);
+		tabuleiro.add(conteudo6, quadrante);
 	}
 
 	@Test
@@ -147,7 +167,9 @@ public class TabuleiroTest {
 	@Test
 	public void testConteudoEncontrado() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
 		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		assertTrue(tabuleiro.contains(new Conteudo(0)));
+		Conteudo conteudo = new Conteudo();
+		conteudo.setCodigo(1);
+		assertTrue(tabuleiro.contains(conteudo));
 	}
 
 	@Test
