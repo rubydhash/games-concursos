@@ -2,45 +2,133 @@ package br.com.concursos.domain;
 
 public class Conteudo {
 
-	private int numero;
-	private boolean inPlace = true;
+	private int codigo;
+	private String sigla;
+	private String nome;
+	private String nomeOriginal;
+	private String descricao;
 	private Object tituloHorizontal;
 	private Object tituloVertical;
+	private boolean inPlace = true;
 
-	public Conteudo(int numero) {
-		this.numero = numero;
+	/**
+	 * @return the codigo
+	 */
+	public int getCodigo() {
+		return codigo;
 	}
 
-	public int getNumero() {
-		return numero;
+	/**
+	 * @param codigo
+	 *            the codigo to set
+	 */
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+	/**
+	 * @return the sigla
+	 */
+	public String getSigla() {
+		return sigla;
 	}
 
-	public boolean isInPlace() {
-		return inPlace;
+	/**
+	 * @param sigla
+	 *            the sigla to set
+	 */
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 
-	public void setInPlace(boolean inPlace) {
-		this.inPlace = inPlace;
+	/**
+	 * @return the nome
+	 */
+	public String getNome() {
+		return nome;
 	}
 
+	/**
+	 * @param nome
+	 *            the nome to set
+	 */
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	/**
+	 * @return the nomeOriginal
+	 */
+	public String getNomeOriginal() {
+		return nomeOriginal;
+	}
+
+	/**
+	 * @param nomeOriginal
+	 *            the nomeOriginal to set
+	 */
+	public void setNomeOriginal(String nomeOriginal) {
+		this.nomeOriginal = nomeOriginal;
+	}
+
+	/**
+	 * @return the descricao
+	 */
+	public String getDescricao() {
+		return descricao;
+	}
+
+	/**
+	 * @param descricao
+	 *            the descricao to set
+	 */
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	/**
+	 * @return the tituloHorizontal
+	 */
 	public Object getTituloHorizontal() {
 		return tituloHorizontal;
 	}
 
+	/**
+	 * @param tituloHorizontal
+	 *            the tituloHorizontal to set
+	 */
 	public void setTituloHorizontal(Object tituloHorizontal) {
 		this.tituloHorizontal = tituloHorizontal;
 	}
 
+	/**
+	 * @return the tituloVertical
+	 */
 	public Object getTituloVertical() {
 		return tituloVertical;
 	}
 
+	/**
+	 * @param tituloVertical
+	 *            the tituloVertical to set
+	 */
 	public void setTituloVertical(Object tituloVertical) {
 		this.tituloVertical = tituloVertical;
+	}
+
+	/**
+	 * @return the inPlace
+	 */
+	public boolean isInPlace() {
+		return inPlace;
+	}
+
+	/**
+	 * @param inPlace
+	 *            the inPlace to set
+	 */
+	public void setInPlace(boolean inPlace) {
+		this.inPlace = inPlace;
 	}
 
 	@Override
@@ -49,7 +137,7 @@ public class Conteudo {
 		if (obj instanceof Conteudo) {
 			outroConteudo = (Conteudo) obj;
 
-			if (this.getNumero() == outroConteudo.getNumero()) {
+			if (this.getCodigo() == outroConteudo.getCodigo() && this.getNome().equals(outroConteudo.getNome())) {
 				return true;
 			}
 		}
@@ -59,7 +147,7 @@ public class Conteudo {
 
 	@Override
 	public String toString() {
-		return "Conteúdo " + this.getNumero();
+		return "Conteúdo " + this.getCodigo();
 	}
 
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conteudosRoot xmlns="http://www.gamesconcursos.com.br/conteudos"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.gamesconcursos.com.br/conteudos conteudos.xsd">
+	<conteudos>
+		<conteudo>
+			<codigo>0</codigo>
+			<sigla>sigla</sigla>
+			<nome>nome</nome>
+			<nomeOriginal>nomeOriginal</nomeOriginal>
+			<descricao>descricao</descricao>
+			<tituloHorizontal>tituloHorizontal</tituloHorizontal>
+			<tituloVertical>tituloVertical</tituloVertical>
+		</conteudo>
+		<conteudo>
+			<codigo>1</codigo>
+			<sigla>sigla</sigla>
+			<nome>nome</nome>
+			<nomeOriginal>nomeOriginal</nomeOriginal>
+			<descricao>descricao</descricao>
+			<tituloHorizontal>tituloHorizontal</tituloHorizontal>
+			<tituloVertical>tituloVertical</tituloVertical>
+		</conteudo>
+		<conteudo>
+			<codigo>2</codigo>
+			<sigla>sigla</sigla>
+			<nome>nome</nome>
+			<nomeOriginal>nomeOriginal</nomeOriginal>
+			<descricao>descricao</descricao>
+			<tituloHorizontal>tituloHorizontal</tituloHorizontal>
+			<tituloVertical>tituloVertical</tituloVertical>
+		</conteudo>
+	</conteudos>
+</conteudosRoot>

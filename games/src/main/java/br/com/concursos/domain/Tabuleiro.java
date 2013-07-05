@@ -21,17 +21,17 @@ public class Tabuleiro {
 	private List<Setor> setoresHorizontais;
 	private List<Setor> setoresVerticais;
 
-	public Tabuleiro(int linha, int coluna) throws TabuleiroTamanhoInvalidoException {
-		if (linha == 0 || coluna == 0 || linha < 0 || coluna < 0) {
+	public Tabuleiro(TamanhoTabuleiro tamanhoTabuleiro) throws TabuleiroTamanhoInvalidoException {
+		if (tamanhoTabuleiro.getLinha() == 0 || tamanhoTabuleiro.getColuna() == 0 || tamanhoTabuleiro.getLinha() < 0 || tamanhoTabuleiro.getColuna() < 0) {
 			throw new TabuleiroTamanhoInvalidoException();
 		}
 
-		quadrantes = new Quadrante[linha][coluna];
+		quadrantes = new Quadrante[tamanhoTabuleiro.getLinha()][tamanhoTabuleiro.getColuna()];
 		setoresHorizontais = new ArrayList<Setor>();
 		setoresVerticais = new ArrayList<Setor>();
-		for (int i = 0; i < linha; i++) {
+		for (int i = 0; i < tamanhoTabuleiro.getLinha(); i++) {
 			Setor setorHorizontal = new Setor(i, TipoSetor.HORIZONTAL);
-			for (int j = 0; j < coluna; j++) {
+			for (int j = 0; j < tamanhoTabuleiro.getColuna(); j++) {
 				quadrantes[i][j] = new Quadrante(i, j);
 				if (i == 0) {
 					Setor setorVertical = new Setor(j, TipoSetor.VERTICAL);
@@ -364,7 +364,7 @@ public class Tabuleiro {
 				}
 			}
 		}
-		
+
 		return resposta;
 	}
 
