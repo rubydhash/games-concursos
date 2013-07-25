@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conteudosRoot>
+	<conteudos>
+		<conteudo>
+			<codigo>0</codigo>
+			<sigla>sigla</sigla>
+			<nome>cmmi1.3 - 0</nome>
+			<nomeOriginal>nomeOriginal</nomeOriginal>
+			<descricao>descricao</descricao>
+			<tituloHorizontal>titulo0H</tituloHorizontal>
+			<tituloVertical>titulo0V</tituloVertical>
+		</conteudo>
+		<conteudo>
+			<codigo>1</codigo>
+			<sigla>sigla</sigla>
+			<nome>cmmi1.3 - 1</nome>
+			<nomeOriginal>nomeOriginal</nomeOriginal>
+			<descricao>descricao</descricao>
+			<tituloHorizontal>titulo1H</tituloHorizontal>
+			<tituloVertical>titulo1V</tituloVertical>
+		</conteudo>
+		<conteudo>
+			<codigo>2</codigo>
+			<sigla>sigla</sigla>
+			<nome>cmmi1.3 - 2</nome>
+			<nomeOriginal>nomeOriginal</nomeOriginal>
+			<descricao>descricao</descricao>
+			<tituloHorizontal>titulo2H</tituloHorizontal>
+			<tituloVertical>titulo2V</tituloVertical>
+		</conteudo>
+	</conteudos>
+</conteudosRoot>

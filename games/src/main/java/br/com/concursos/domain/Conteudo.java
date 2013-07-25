@@ -7,8 +7,8 @@ public class Conteudo {
 	private String nome;
 	private String nomeOriginal;
 	private String descricao;
-	private Object tituloHorizontal;
-	private Object tituloVertical;
+	private String tituloHorizontal;
+	private String tituloVertical;
 	private boolean inPlace = true;
 
 	/**
@@ -89,7 +89,7 @@ public class Conteudo {
 	/**
 	 * @return the tituloHorizontal
 	 */
-	public Object getTituloHorizontal() {
+	public String getTituloHorizontal() {
 		return tituloHorizontal;
 	}
 
@@ -97,14 +97,14 @@ public class Conteudo {
 	 * @param tituloHorizontal
 	 *            the tituloHorizontal to set
 	 */
-	public void setTituloHorizontal(Object tituloHorizontal) {
+	public void setTituloHorizontal(String tituloHorizontal) {
 		this.tituloHorizontal = tituloHorizontal;
 	}
 
 	/**
 	 * @return the tituloVertical
 	 */
-	public Object getTituloVertical() {
+	public String getTituloVertical() {
 		return tituloVertical;
 	}
 
@@ -112,7 +112,7 @@ public class Conteudo {
 	 * @param tituloVertical
 	 *            the tituloVertical to set
 	 */
-	public void setTituloVertical(Object tituloVertical) {
+	public void setTituloVertical(String tituloVertical) {
 		this.tituloVertical = tituloVertical;
 	}
 
@@ -137,7 +137,7 @@ public class Conteudo {
 		if (obj instanceof Conteudo) {
 			outroConteudo = (Conteudo) obj;
 
-			if (this.getCodigo() == outroConteudo.getCodigo() && this.getNome().equals(outroConteudo.getNome())) {
+			if (this.getCodigo() == outroConteudo.getCodigo()) {
 				return true;
 			}
 		}
@@ -147,7 +147,7 @@ public class Conteudo {
 
 	@Override
 	public String toString() {
-		return "Conteúdo " + this.getCodigo();
+		return "Conteúdo " + this.getCodigo() + ": " + this.nome;
 	}
 
 }

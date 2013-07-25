@@ -12,58 +12,66 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.log4j.Logger;
-
 import br.com.concursos.domain.Conteudo;
+import br.com.concursos.enumeration.ArquivoXml;
+import br.com.concursos.exception.ConteudoNaoEncontradoException;
 
-@XmlRootElement(name = "conteudosRoot", namespace = "http://www.gamesconcursos.com.br/conteudos")
+@XmlRootElement(name = "conteudosRoot")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ConteudoDaoXml implements ConteudoDao {
 
-	private static Logger log = Logger.getLogger(ConteudoDaoXml.class);
-
-	@XmlElement(name = "conteudo", namespace = "http://www.gamesconcursos.com.br/conteudos")
-	@XmlElementWrapper(name = "conteudos", namespace = "http://www.gamesconcursos.com.br/conteudos")
+	@XmlElement(name = "conteudo")
+	@XmlElementWrapper(name = "conteudos")
 	private List<Conteudo> conteudos;
 
-	private static ConteudoDaoXml conteudoDao;
+	private ArquivoXml arquivoXml;
 
+	@SuppressWarnings("unused")
 	private ConteudoDaoXml() {
+
+	}
+
+	public ConteudoDaoXml(ArquivoXml arquivoXml) throws JAXBException {
+		this.arquivoXml = arquivoXml;
+		carregaXml();
 	}
 
 	/**
-	 * Acesso único ao objeto!
+	 * Carrega um determinado arquivo XML
 	 * 
-	 * @throws JAXBException
 	 */
-	public static ConteudoDaoXml getInstance() throws JAXBException {
-		if (conteudoDao == null) {
-			carregaXML();
-		}
-
-		return conteudoDao;
-	}
-
-	/**
-	 * Carrega arquivo XML do CMMI v1.2
-	 * 
-	 * @throws JAXBException
-	 */
-	public static void carregaXML() throws JAXBException {
-		JAXBContext context;
-		log.debug("Carregando arquivo XML do jogo CMMI v1.2");
-
-		context = JAXBContext.newInstance(ConteudoDaoXml.class);
+	private void carregaXml() throws JAXBException {
+		JAXBContext context = JAXBContext.newInstance(ConteudoDaoXml.class);
 		Unmarshaller unmarshaller = context.createUnmarshaller();
-		conteudoDao = (ConteudoDaoXml) unmarshaller.unmarshal(new File("src/main/resources/arquivos/cmmi-v1.2.xml"));
-
-		log.debug("Arquivo XML de metadados do jogo CMMI v1.2 - carregado com sucesso!");
+		ConteudoDaoXml conteudoDaoXml = (ConteudoDaoXml) unmarshaller.unmarshal(new File("src/main/resources/arquivos/" + getArquivoXml().getDescricao()));
+		this.conteudos = conteudoDaoXml.getConteudos();
 	}
 
 	/**
-	 * @return the conteudosCmmi
+	 * @return conteudos
 	 */
 	public List<Conteudo> getConteudos() {
 		return conteudos;
 	}
+
+	@Override
+	public Conteudo findBy(int codigo) throws ConteudoNaoEncontradoException {
+		Conteudo conteudoFinded = new Conteudo();
+		for (Conteudo conteudo : conteudos) {
+			if (conteudo.equals(conteudoFinded)) {
+				return conteudo;
+			}
+
+		}
+
+		throw new ConteudoNaoEncontradoException();
+	}
+
+	/**
+	 * @return the arquivoXml
+	 */
+	public ArquivoXml getArquivoXml() {
+		return arquivoXml;
+	}
+
 }

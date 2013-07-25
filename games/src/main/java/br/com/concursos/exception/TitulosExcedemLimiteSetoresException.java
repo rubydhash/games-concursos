@@ -4,7 +4,7 @@ import br.com.concursos.message.ErrorMessage;
 
 public class TitulosExcedemLimiteSetoresException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1343847951674678399L;
 
 	@Override
 	public String getMessage() {

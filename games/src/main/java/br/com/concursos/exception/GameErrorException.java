@@ -4,7 +4,7 @@ import br.com.concursos.message.ErrorMessage;
 
 public class GameErrorException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2510355059896561726L;
 
 	@Override
 	public String getMessage() {
