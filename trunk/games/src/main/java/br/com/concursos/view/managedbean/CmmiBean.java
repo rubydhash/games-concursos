@@ -50,7 +50,7 @@ public class CmmiBean implements Serializable {
 		processosSelecionados.add(processoCmmi);
 		processosCmmi.remove(processoCmmi);
 
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(processoCmmi.getNome() + " adicionado", "Posição: " + event.getDropId()));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(processoCmmi + " adicionado", "Posição: " + event.getDropId()));
 	}
 
 }

@@ -4,14 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.concursos.domain.Cmmi;
-import br.com.concursos.domain.Processo;
-import br.com.concursos.domain.Quadrante;
 import br.com.concursos.enumeration.ProcessoCmmi;
 import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
 import br.com.concursos.exception.ConteudoExistenteException;
@@ -29,15 +24,13 @@ public class CmmiTest {
 	@Before
 	public void init() throws TabuleiroTamanhoInvalidoException, TitulosExcedemLimiteSetoresException {
 		cmmi = new Cmmi();
+		cmmi.inicializa();
 		quadrante = new Quadrante(0, 0);
 	}
 
 	@Test
 	public void testInicializaGame() throws TabuleiroTamanhoInvalidoException, TitulosExcedemLimiteSetoresException {
-		cmmi.inicializa();
-		List<Processo> processos = cmmi.getProcessos();
-
-		assertEquals("A lista de processos deve conter todos os 22 processos existentes no CMMI.", 22, processos.size());
+		assertEquals("A lista de processos deve conter todos os 22 processos existentes no CMMI.", 22, cmmi.getConteudos().size());
 		assertNotNull(cmmi.getTabuleiro());
 	}
 
@@ -53,19 +46,21 @@ public class CmmiTest {
 	}
 
 	@Test
-	public void testAddProcessoCmmi() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
+	public void testAddProcessoCmmi() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException,
+			ConteudoNaoEncontradoException {
 		assertTrue(cmmi.add(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante));
 	}
 
 	@Test(expected = ConteudoExistenteException.class)
-	public void testAddProcessoCmmiExistente() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
+	public void testAddProcessoCmmiExistente() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException,
+			ConteudoNaoEncontradoException {
 		cmmi.add(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
 		cmmi.add(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
 	}
 
 	@Test(expected = ConteudoExcedeLimitePermitidoException.class)
-	public void testAddProcessoCmmiAcimaDoLimitePermitidoNoMesmoQuadrante() throws ConteudoExistenteException,
-			QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
+	public void testAddProcessoCmmiAcimaDoLimitePermitidoNoMesmoQuadrante() throws ConteudoExistenteException, QuadranteInvalidoException,
+			ConteudoExcedeLimitePermitidoException, ConteudoNaoEncontradoException {
 		cmmi.add(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
 		cmmi.add(ProcessoCmmi.ANALISE_DE_DECISAO_E_RESOLUCAO, quadrante);
 		cmmi.add(ProcessoCmmi.DEFINICAO_DE_PROCESSO_ORGANIZACIONAL, quadrante);
@@ -75,8 +70,7 @@ public class CmmiTest {
 	}
 
 	@Test
-	public void testRemoveProcessoCmmi() throws ConteudoExistenteException, QuadranteInvalidoException,
- ConteudoNaoEncontradoException,
+	public void testRemoveProcessoCmmi() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoNaoEncontradoException,
 			ConteudoExcedeLimitePermitidoException {
 		cmmi.add(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO, quadrante);
 		assertTrue(cmmi.remove(ProcessoCmmi.ANALISE_CASUAL_E_RESOLUCAO));
