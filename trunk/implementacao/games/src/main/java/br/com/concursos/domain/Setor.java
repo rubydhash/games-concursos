@@ -5,66 +5,53 @@ import java.util.List;
 
 import br.com.concursos.enumeration.TipoSetor;
 
-public class Setor {
+public class Setor<E> {
 
-	private int numero;
+	private Integer id;
 	private TipoSetor tipo;
-	private Object titulo;
-	private List<Quadrante> quadrantes;
+	private List<Quadrante<E>> quadrantes;
 
-	public Setor(int numero, TipoSetor tipo) {
-		this.numero = numero;
+	public Setor(Integer id, TipoSetor tipo) {
+		this.id = id;
 		this.tipo = tipo;
-		this.quadrantes = new ArrayList<Quadrante>();
+		this.quadrantes = new ArrayList<Quadrante<E>>();
 	}
 
-	public int getNumero() {
-		return numero;
-	}
-
-	public void setNumero(int numero) {
-		this.numero = numero;
+	public Integer getId() {
+		return id;
 	}
 
 	public TipoSetor getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(TipoSetor tipo) {
-		this.tipo = tipo;
-	}
-
-	public Object getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(Object titulo) {
-		this.titulo = titulo;
-	}
-
-	public List<Quadrante> getQuadrantes() {
+	public List<Quadrante<E>> getQuadrantes() {
 		return quadrantes;
 	}
 
-	public void setQuadrantes(List<Quadrante> quadrantes) {
-		this.quadrantes = quadrantes;
+	public void addQuadrante(Quadrante<E> quadrante) {
+		quadrantes.add(quadrante);
 	}
 
-	public void addQuadrante(Quadrante quadrante) {
-		this.quadrantes.add(quadrante);
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
-		Setor outroSetor;
+		Setor<E> outroSetor;
 		if (obj instanceof Setor) {
-			outroSetor = (Setor) obj;
+			outroSetor = (Setor<E>) obj;
 
-			if (this.getNumero() == outroSetor.getNumero() && this.getTipo().equals(outroSetor.getTipo())) {
+			if (getId().equals(outroSetor.getId()) && getTipo().equals(outroSetor.getTipo())
+					&& getQuadrantes().equals(outroSetor.getQuadrantes())) {
 				return true;
 			}
 		}
 
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return getTipo() + " (" + getId() + ")";
+	}
+
 }

@@ -1,208 +1,137 @@
 package br.com.concursos.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import br.com.concursos.enumeration.TipoSetor;
-import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
-import br.com.concursos.exception.ConteudoExistenteException;
-import br.com.concursos.exception.ConteudoNaoEncontradoException;
+import br.com.concursos.exception.ElementoExistenteException;
+import br.com.concursos.exception.ElementoNaoEncontradoException;
+import br.com.concursos.exception.LocalizacaoNaoPreenchidaException;
 import br.com.concursos.exception.QuadranteInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
-import br.com.concursos.exception.TitulosExcedemLimiteSetoresException;
 
-public class Tabuleiro {
+public class Tabuleiro<E> implements Modelo<E> {
 
-	private int limiteQuadrante = 5;
-
-	private Quadrante[][] quadrantes;
-	private List<Setor> setoresHorizontais;
-	private List<Setor> setoresVerticais;
+	private List<Setor<E>> setoresHorizontais;
+	private List<Setor<E>> setoresVerticais;
+	private TamanhoTabuleiro tamanhoTabuleiro;
+	private Setor<E> setorHorizontal;
+	private Setor<E> setorVertical;
 
 	public Tabuleiro(TamanhoTabuleiro tamanhoTabuleiro) throws TabuleiroTamanhoInvalidoException {
 		if (tamanhoTabuleiro.getLinha() == 0 || tamanhoTabuleiro.getColuna() == 0 || tamanhoTabuleiro.getLinha() < 0 || tamanhoTabuleiro.getColuna() < 0) {
 			throw new TabuleiroTamanhoInvalidoException();
 		}
 
-		quadrantes = new Quadrante[tamanhoTabuleiro.getLinha()][tamanhoTabuleiro.getColuna()];
-		setoresHorizontais = new ArrayList<Setor>();
-		setoresVerticais = new ArrayList<Setor>();
-		for (int i = 0; i < tamanhoTabuleiro.getLinha(); i++) {
-			Setor setorHorizontal = new Setor(i, TipoSetor.HORIZONTAL);
-			for (int j = 0; j < tamanhoTabuleiro.getColuna(); j++) {
-				quadrantes[i][j] = new Quadrante(i, j);
-				if (i == 0) {
-					Setor setorVertical = new Setor(j, TipoSetor.VERTICAL);
-					setorVertical.addQuadrante(quadrantes[i][j]);
-					setoresVerticais.add(setorVertical);
-				} else {
-					setoresVerticais.get(j).addQuadrante(quadrantes[i][j]);
-				}
-
-				setorHorizontal.addQuadrante(quadrantes[i][j]);
-			}
-			setoresHorizontais.add(setorHorizontal);
-		}
+		this.tamanhoTabuleiro = tamanhoTabuleiro;
+		construct();
 	}
 
-	// /**
-	// * @return the quadrantes
-	// */
-	// public Quadrante[][] getQuadrantes() {
-	// return quadrantes;
-	// }
-	//
-	// /**
-	// * @return the setoresHorizontais
-	// */
-	// public List<Setor> getSetoresHorizontais() {
-	// return setoresHorizontais;
-	// }
-	//
-	// /**
-	// * @return the setoresVerticais
-	// */
-	// public List<Setor> getSetoresVerticais() {
-	// return setoresVerticais;
-	// }
+	public List<Setor<E>> getSetoresHorizontais() {
+		return setoresHorizontais;
+	}
 
-	/**
-	 * Retorna o total de Quadrantes do Tabuleiro.
-	 * 
-	 * @return totalQuadrantes
-	 */
-	public int getTotalQuadrantes() {
-		return setoresHorizontais.size() * setoresVerticais.size();
+	public List<Setor<E>> getSetoresVerticais() {
+		return setoresVerticais;
+	}
+
+	public TamanhoTabuleiro getTamanhoTabuleiro() {
+		return tamanhoTabuleiro;
+	}
+
+	public Setor<E> getSetorHorizontal() {
+		return setorHorizontal;
+	}
+
+	public void setSetorHorizontal(Setor<E> setorHorizontal) {
+		this.setorHorizontal = setorHorizontal;
+	}
+
+	public Setor<E> getSetorVertical() {
+		return setorVertical;
+	}
+
+	public void setSetorVertical(Setor<E> setorVertical) {
+		this.setorVertical = setorVertical;
 	}
 
 	/**
-	 * Retorna o total de Quadrantes por Tipo de Setor (Horizontal ou Vertical)
-	 * 
-	 * @return totalQuadrantesSetor
-	 */
-	public int getTotalQuadrantes(TipoSetor tipoSetor) {
-		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
-			return setoresHorizontais.get(0).getQuadrantes().size();
-		}
-
-		return setoresVerticais.get(0).getQuadrantes().size();
-	}
-
-	/**
-	 * Retorna o total de Quadrantes por Tipo de Setor (Horizontal ou Vertical)
-	 * 
-	 * @return totalQuadrantesSetor
-	 */
-	public int getTotal(TipoSetor tipoSetor) {
-		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
-			return setoresHorizontais.size();
-		}
-
-		return setoresVerticais.size();
-	}
-
-	/**
-	 * Retorna os Quadrantes de um determinado setor do Tabuleiro.
-	 * 
-	 * @param Setor
-	 * @return {@link List} {@link Quadrante}
-	 */
-	public List<Quadrante> getQuadrantes(Setor setor) {
-		return this.getSetor(setor.getTipo()).get(setor.getNumero()).getQuadrantes();
-	}
-
-	/**
-	 * @param tipoSetor
-	 * @return setoresHorizontais ou setoresVerticais
-	 */
-	public List<Setor> getSetor(TipoSetor tipoSetor) {
-		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
-			return setoresHorizontais;
-		} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
-			return setoresVerticais;
-		}
-
-		throw new IllegalArgumentException();
-	}
-
-	/**
-	 * @param setor
-	 * @return setoresHorizontais ou setoresVerticais
-	 */
-	public Setor getSetor(Setor setor) {
-		if (setor.getTipo().equals(TipoSetor.HORIZONTAL)) {
-			return setoresHorizontais.get(setor.getNumero());
-		} else if (setor.getTipo().equals(TipoSetor.VERTICAL)) {
-			return setoresVerticais.get(setor.getNumero());
-		}
-
-		throw new IllegalArgumentException();
-	}
-
-	/**
-	 * Altera todos os títulos de um determinado Setor do Tabuleiro.
-	 * 
-	 * @param titulos
-	 * @param tipoSetor
-	 * @param boolean
-	 * @throws TitulosExcedemLimiteSetoresException
-	 */
-	public void setTitulos(List<?> titulos, TipoSetor tipoSetor, boolean randomico) throws TitulosExcedemLimiteSetoresException {
-		List<Setor> setores = getSetor(tipoSetor);
-
-		if (randomico) {
-			Collections.shuffle(Arrays.asList(titulos));
-		}
-
-		if (titulos.size() > setores.size()) {
-			throw new TitulosExcedemLimiteSetoresException();
-		}
-
-		for (int i = 0; i < titulos.size(); i++) {
-			setores.get(i).setTitulo(titulos.get(i));
-		}
-	}
-
-	/**
-	 * Altera o título de um determinado Setor do Tabuleiro.
-	 * 
-	 * @param titulo
-	 * @param setor
-	 */
-	public void setTitulo(Object titulo, Setor setor) {
-		setor = getSetor(setor);
-
-		setor.setTitulo(titulo);
-	}
-
-	/**
-	 * Retorna o quantos conteúdos estão no Tabuleiro.
-	 * 
-	 * @return totalConteudos
-	 */
-	public int getTotalConteudo() {
-		int totalConteudos = 0;
-		for (int i = 0; i < quadrantes.length; i++) {
-			for (int j = 0; j < quadrantes[i].length; j++) {
-				totalConteudos += quadrantes[i][j].getTotalConteudo();
-			}
-		}
-
-		return totalConteudos;
-	}
-
-	/**
-	 * Procura o conteudo no Tabuleiro.
+	 * Adiciona o conteúdo no tabuleiro no quadrante desejado.
 	 * 
 	 * @param conteudo
+	 * @param setorHorizontal
+	 * @param setorVertical
 	 * @return {@link Boolean}
+	 * @throws QuadranteInvalidoException
+	 * @throws ElementoExistenteException
 	 */
-	public boolean contains(Conteudo conteudo) {
-		for (int i = 0; i < quadrantes.length; i++) {
-			for (int j = 0; j < quadrantes[i].length; j++) {
-				if (quadrantes[i][j].contains(conteudo)) {
+	public Boolean add(E e, Setor<E> setorHorizontal, Setor<E> setorVertical) throws QuadranteInvalidoException, ElementoExistenteException {
+		if ((setorHorizontal.getId() < 0 || setorHorizontal.getId() > getSetoresHorizontais().size() - 1)
+				|| (setorVertical.getId() < 0 || setorVertical.getId() > getSetoresVerticais().size() - 1)) {
+			throw new QuadranteInvalidoException();
+		}
+
+		if (contains(e)) {
+			throw new ElementoExistenteException();
+		}
+
+		getSetoresHorizontais().get(setorHorizontal.getId()).getQuadrantes().get(setorVertical.getId()).add(e);
+
+		return true;
+	}
+
+	/**
+	 * Especificado em {@link Modelo#add})
+	 * 
+	 * Observação: Deve ser inserido um setorHorizontal e um setorVertical ({@link Setor}
+	 */
+	@Override
+	public Boolean add(E e) throws Exception {
+		if (setorHorizontal == null || setorVertical == null) {
+			throw new LocalizacaoNaoPreenchidaException();
+		}
+
+		add(e, setorHorizontal, setorVertical);
+		setSetorHorizontal(null);
+		setSetorVertical(null);
+
+		return true;
+	}
+
+	@Override
+	public void remove(E e) throws ElementoNaoEncontradoException {
+		if (contains(e)) {
+			Quadrante<E> quadrante = getQuadrante(e);
+			quadrante.remove(e);
+		} else {
+			throw new ElementoNaoEncontradoException();
+		}
+	}
+
+	/**
+	 * Recupera o quadrante referente ao elemento no tabuleiro.
+	 * 
+	 * @param e
+	 *            elemento que será procurado para achar o quadrante desejado.
+	 * @return {@link Quadrante}
+	 */
+	private Quadrante<E> getQuadrante(E e) {
+		for (int i = 0; i < getSetoresHorizontais().size(); i++) {
+			for (int j = 0; j < getSetoresVerticais().size(); j++) {
+				if (((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).contains(e)) {
+					return (Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public Boolean contains(E e) {
+		for (int i = 0; i < getSetoresHorizontais().size(); i++) {
+			for (int j = 0; j < getSetoresVerticais().size(); j++) {
+				if (((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).contains(e)) {
 					return true;
 				}
 			}
@@ -211,161 +140,92 @@ public class Tabuleiro {
 		return false;
 	}
 
-	/**
-	 * Retorna o Quadrante que se encontra o conteudo no Tabuleiro.
-	 * 
-	 * @param conteudo
-	 * @return {@link Quadrante}
-	 * @throws ConteudoNaoEncontradoException
-	 */
-	public Quadrante getQuadrante(Conteudo conteudo) throws ConteudoNaoEncontradoException {
-		if (!this.contains(conteudo)) {
-			throw new ConteudoNaoEncontradoException();
-		}
+	@Override
+	public void construct() {
+		setoresHorizontais = new ArrayList<Setor<E>>();
+		setoresVerticais = new ArrayList<Setor<E>>();
+		for (int i = 0; i < tamanhoTabuleiro.getLinha(); i++) {
+			Setor<E> setorHorizontal = new Setor<>(i, TipoSetor.HORIZONTAL);
+			getSetoresHorizontais().add(setorHorizontal);
 
-		for (int i = 0; i < quadrantes.length; i++) {
-			for (int j = 0; j < quadrantes[i].length; j++) {
-				if (quadrantes[i][j].contains(conteudo)) {
-					return quadrantes[i][j];
+			for (int j = 0; j < tamanhoTabuleiro.getColuna(); j++) {
+				Setor<E> setorVertical;
+
+				if (i == 0) {
+					setorVertical = new Setor<>(j, TipoSetor.VERTICAL);
+					getSetoresVerticais().add(setorVertical);
+				} else {
+					setorVertical = getSetoresVerticais().get(j);
+				}
+
+				Quadrante<E> quadrante = new Quadrante<>(setorHorizontal, setorVertical);
+				setorHorizontal.addQuadrante(quadrante);
+				setorVertical.addQuadrante(quadrante);
+			}
+		}
+	}
+
+	@Override
+	public Boolean isEmpty() {
+		for (int i = 0; i < getSetoresHorizontais().size(); i++) {
+			for (int j = 0; j < getSetoresVerticais().size(); j++) {
+				if (!((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).getElementos().isEmpty()) {
+					return false;
 				}
 			}
 		}
-
-		throw new ConteudoNaoEncontradoException();
-	}
-
-	/**
-	 * Retorna o Quadrante que se encontra o conteudo no Tabuleiro.
-	 * 
-	 * @param linha
-	 * @param coluna
-	 * @return {@link Quadrante}
-	 * @throws QuadranteInvalidoException
-	 */
-	public Quadrante getQuadrante(int linha, int coluna) throws QuadranteInvalidoException {
-		if ((linha < 0 || coluna > getTotalQuadrantes(TipoSetor.HORIZONTAL) - 1) || (linha < 0 || coluna > getTotalQuadrantes(TipoSetor.VERTICAL) - 1)) {
-			throw new QuadranteInvalidoException();
-		}
-
-		return quadrantes[linha][coluna];
-	}
-
-	/**
-	 * Retorna o Quadrante que se encontra o conteudo no Tabuleiro.
-	 * 
-	 * @param quadrante
-	 * @return {@link Quadrante}
-	 * @throws QuadranteInvalidoException
-	 */
-	public Quadrante getQuadrante(Quadrante quadrante) throws QuadranteInvalidoException {
-		if ((quadrante.getLinha() < 0 || quadrante.getColuna() > getTotalQuadrantes(TipoSetor.HORIZONTAL) - 1)
-				|| (quadrante.getLinha() < 0 || quadrante.getColuna() > getTotalQuadrantes(TipoSetor.VERTICAL) - 1)) {
-			throw new QuadranteInvalidoException();
-		}
-
-		return quadrantes[quadrante.getLinha()][quadrante.getColuna()];
-	}
-
-	/**
-	 * Adiciona o conteudo no Tabuleiro no quadrante desejado. (somente a linha e a coluna sao necessarios)
-	 * 
-	 * @param conteudo
-	 * @param quadrante
-	 * @return {@link Boolean}
-	 * @throws ConteudoExistenteException
-	 * @throws QuadranteInvalidoException
-	 * @throws ConteudoExcedeLimitePermitidoException
-	 */
-	public boolean add(Conteudo conteudo, Quadrante quadrante) throws ConteudoExistenteException, QuadranteInvalidoException,
-			ConteudoExcedeLimitePermitidoException {
-		quadrante = getQuadrante(quadrante);
-
-		if (quadrante.getConteudos().size() >= limiteQuadrante) {
-			throw new ConteudoExcedeLimitePermitidoException();
-		}
-
-		if ((quadrante.getLinha() < 0 || quadrante.getLinha() > getTotalQuadrantes(TipoSetor.HORIZONTAL) - 1)
-				|| (quadrante.getColuna() < 0 || quadrante.getColuna() > getTotalQuadrantes(TipoSetor.VERTICAL) - 1)) {
-			throw new QuadranteInvalidoException();
-		}
-
-		if (contains(conteudo)) {
-			throw new ConteudoExistenteException();
-		}
-
-		quadrante.add(conteudo);
-
-		return true;
-	}
-
-	/**
-	 * Remove o conteúdo do Tabuleiro no quadrante desejado.
-	 * 
-	 * @param conteudo
-	 * @param quadrante
-	 * @return {@link Boolean}
-	 * @throws ConteudoNaoEncontradoException
-	 */
-	public boolean remove(Conteudo conteudo) throws ConteudoNaoEncontradoException {
-		Quadrante quadrante = getQuadrante(conteudo);
-		quadrante.remove(conteudo);
 
 		return true;
 	}
 
 	@Override
+	public Integer size() {
+		Integer size = 0;
+		for (int i = 0; i < getSetoresHorizontais().size(); i++) {
+			for (int j = 0; j < getSetoresVerticais().size(); j++) {
+				size += ((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).size();
+			}
+		}
+
+		return size;
+	}
+
+	@Override
+	public void clear() {
+		for (int i = 0; i < setoresHorizontais.size(); i++) {
+			for (int j = 0; j < getSetoresVerticais().size(); j++) {
+				((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).clear();
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
+		Tabuleiro<E> outroTabuleiro;
+		if (obj instanceof Tabuleiro) {
+			outroTabuleiro = (Tabuleiro<E>) obj;
+
+			if (setoresHorizontais.equals(outroTabuleiro.getSetoresHorizontais()) && getSetoresVerticais().equals(outroTabuleiro.getSetoresVerticais())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		StringBuffer tabuleiro = new StringBuffer();
-		for (int i = 0; i < quadrantes.length; i++) {
-			for (int j = 0; j < quadrantes[i].length; j++) {
-				tabuleiro.append(quadrantes[i][j]);
+		for (int i = 0; i < getSetoresHorizontais().size(); i++) {
+			for (int j = 0; j < getSetoresVerticais().size(); j++) {
+				tabuleiro.append(((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).getElementos());
 			}
 
 			tabuleiro.append("\n");
 		}
 
 		return tabuleiro.toString();
-	}
-
-	public int getLimiteQuadrante() {
-		return limiteQuadrante;
-	}
-
-	public void setLimiteQuadrante(int limiteQuadrante) {
-		this.limiteQuadrante = limiteQuadrante;
-	}
-
-	/**
-	 * Verifica os conteúdos com seus respectivos Quadrantes.
-	 * 
-	 * @param tipoSetor
-	 * @return {@link Boolean} resposta
-	 * 
-	 */
-	public boolean verificaConteudo(TipoSetor tipoSetor) {
-		boolean resposta = true;
-		Object titulo = new Object();
-
-		List<Setor> setores = getSetor(tipoSetor);
-		for (Setor setor : setores) {
-			List<Quadrante> quadrantes = setor.getQuadrantes();
-			for (Quadrante quadrante : quadrantes) {
-				List<Conteudo> conteudos = quadrante.getConteudos();
-				for (Conteudo conteudo : conteudos) {
-					if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
-						titulo = conteudo.getTituloHorizontal();
-					} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
-						titulo = conteudo.getTituloVertical();
-					}
-					if (!setor.getTitulo().equals(titulo)) {
-						conteudo.setInPlace(false);
-						resposta = false;
-					}
-				}
-			}
-		}
-
-		return resposta;
 	}
 
 }
