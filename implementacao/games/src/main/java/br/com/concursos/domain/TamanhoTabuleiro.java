@@ -2,41 +2,27 @@ package br.com.concursos.domain;
 
 public class TamanhoTabuleiro {
 
-	private int linha;
-	private int coluna;
+	private Integer linha;
+	private Integer coluna;
 
-	public TamanhoTabuleiro(int linha, int coluna) {
-		this.linha = linha;
-		this.coluna = coluna;
+	public TamanhoTabuleiro(Integer linha, Integer coluna) {
+		this.setLinha(linha);
+		this.setColuna(coluna);
 	}
 
-	/**
-	 * @return the linha
-	 */
-	public int getLinha() {
+	public Integer getLinha() {
 		return linha;
 	}
 
-	/**
-	 * @param linha
-	 *            the linha to set
-	 */
-	public void setLinha(int linha) {
+	public void setLinha(Integer linha) {
 		this.linha = linha;
 	}
 
-	/**
-	 * @return the coluna
-	 */
-	public int getColuna() {
+	public Integer getColuna() {
 		return coluna;
 	}
 
-	/**
-	 * @param coluna
-	 *            the coluna to set
-	 */
-	public void setColuna(int coluna) {
+	public void setColuna(Integer coluna) {
 		this.coluna = coluna;
 	}
 

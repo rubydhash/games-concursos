@@ -12,230 +12,155 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.concursos.enumeration.TipoSetor;
-import br.com.concursos.exception.ConteudoExcedeLimitePermitidoException;
-import br.com.concursos.exception.ConteudoExistenteException;
-import br.com.concursos.exception.ConteudoNaoEncontradoException;
+import br.com.concursos.exception.ElementoExistenteException;
+import br.com.concursos.exception.ElementoNaoEncontradoException;
 import br.com.concursos.exception.QuadranteInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
-import br.com.concursos.exception.TitulosExcedemLimiteSetoresException;
 
 public class TabuleiroTest {
 
-	private Tabuleiro tabuleiro;
-	private Quadrante quadrante;
-	private List<Conteudo> conteudos;
-	private List<Object> titulos;
+	private Tabuleiro<String> tabuleiro;
+	private List<String> elementos;
 
 	@Before
 	public void init() throws TabuleiroTamanhoInvalidoException {
-		tabuleiro = new Tabuleiro(new TamanhoTabuleiro(4, 3));
-		quadrante = new Quadrante(0, 0);
-		
-		conteudos = new ArrayList<Conteudo>();
-		Conteudo conteudo1 = new Conteudo();
-		conteudo1.setCodigo(1);
-		Conteudo conteudo2 = new Conteudo();
-		conteudo2.setCodigo(2);
-		Conteudo conteudo3 = new Conteudo();
-		conteudo3.setCodigo(3);
-		Conteudo conteudo4 = new Conteudo();
-		conteudo4.setCodigo(4);
-		conteudos.add(conteudo1);
-		conteudos.add(conteudo2);
-		conteudos.add(conteudo3);
-		conteudos.add(conteudo4);
-		
-		titulos = new ArrayList<Object>();
-		titulos.add("Teste 0");
-		titulos.add("Teste 1");
-		titulos.add("Teste 2");
-		titulos.add("Teste 3");
+		tabuleiro = new Tabuleiro<String>(new TamanhoTabuleiro(4, 3));
+
+		elementos = new ArrayList<String>();
+		elementos.add(new String("s1"));
+		elementos.add(new String("s2"));
+		elementos.add(new String("s3"));
+		elementos.add(new String("s4"));
 	}
 
 	@Test
-	public void testCriacaoTabuleiro() {
-		assertEquals("Total de quadrantes = x * y", 12, tabuleiro.getTotalQuadrantes());
+	public void testCriacaoTabuleiro() throws TabuleiroTamanhoInvalidoException {
+		Tabuleiro<String> tabuleiroCriado = new Tabuleiro<String>(new TamanhoTabuleiro(4, 3));
+		assertEquals("Total de setores horizontais = 4", 4, tabuleiroCriado.getSetoresHorizontais().size());
+		assertEquals("Total de setores verticais = 3", 3, tabuleiroCriado.getSetoresVerticais().size());
 	}
 
 	@Test(expected = TabuleiroTamanhoInvalidoException.class)
 	public void testCriacaoTabuleiroTamanhoInvalido() throws TabuleiroTamanhoInvalidoException {
-		tabuleiro = new Tabuleiro(new TamanhoTabuleiro(-1, -1));
+		new Tabuleiro<String>(new TamanhoTabuleiro(-1, -1));
 	}
 
 	@Test(expected = TabuleiroTamanhoInvalidoException.class)
 	public void testCriacaoTabuleiroTamanhoInvalidoLimiteZero() throws TabuleiroTamanhoInvalidoException {
-		tabuleiro = new Tabuleiro(new TamanhoTabuleiro(0, 4));
+		new Tabuleiro<String>(new TamanhoTabuleiro(0, 4));
 	}
 
 	@Test
-	public void testGetTotalQuadrantesSetorHorizontal() {
-		assertEquals("Total de Quadrantes na Horizontais (x) = 3", 3, tabuleiro.getTotalQuadrantes(TipoSetor.HORIZONTAL));
+	public void testSize() throws ElementoExistenteException, QuadranteInvalidoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(2), new Setor<String>(3, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+
+		assertEquals("Total de elementos no tabuleiro, independente de onde estiver.", 3, tabuleiro.size().intValue());
 	}
 
 	@Test
-	public void testGetTotalQuadrantesSetorVertical() {
-		assertEquals("Total de Quadrantes na Verticais (y) = 4", 4, tabuleiro.getTotalQuadrantes(TipoSetor.VERTICAL));
+	public void testElementoNaoEncontrado() {
+		assertFalse(tabuleiro.contains(elementos.get(0)));
 	}
 
 	@Test
-	public void testGetQuadrantesSetorHorizontal() {
-		Setor setorHorizontal = new Setor(0, TipoSetor.HORIZONTAL);
-		assertEquals("Quadrantes Horizontais (x) = 3", 3, tabuleiro.getQuadrantes(setorHorizontal).size());
+	public void testElementoEncontrado() throws ElementoExistenteException, QuadranteInvalidoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		assertTrue(tabuleiro.contains(elementos.get(0)));
 	}
 
 	@Test
-	public void testGetQuadrantesSetorVertical() {
-		Setor setorVertical = new Setor(0, TipoSetor.VERTICAL);
-		assertEquals("Quadrantes Verticais (y) = 4", 4, tabuleiro.getQuadrantes(setorVertical).size());
+	public void testAddElemento() throws QuadranteInvalidoException, ElementoExistenteException {
+		assertTrue(tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL)));
 	}
 
-	@Test
-	public void testSetTitulosQuadrantesSetorHorizontal() throws TitulosExcedemLimiteSetoresException {
-		tabuleiro.setTitulos(titulos, TipoSetor.HORIZONTAL, false);
-		assertNotNull("Título das linhas do Tabuleiro (Quadrantes Horizontais)", tabuleiro.getSetor(new Setor(0, TipoSetor.HORIZONTAL)).getTitulo());
-	}
-
-	@Test
-	public void testSetTitulosQuadrantesSetorVertical() throws TitulosExcedemLimiteSetoresException {
-		titulos.remove(0);
-		tabuleiro.setTitulos(titulos, TipoSetor.VERTICAL, false);
-		assertNotNull("Título das colunas do Tabuleiro (Quadrantes Verticais)", tabuleiro.getSetor(new Setor(0, TipoSetor.VERTICAL)).getTitulo());
-	}
-
-	@Test
-	public void testSetTitulosQuadrantesSetorHorizontalRandomico() throws TitulosExcedemLimiteSetoresException {
-		tabuleiro.setTitulos(titulos, TipoSetor.HORIZONTAL, true);
-		assertNotNull("Título das linhas do Tabuleiro randomicamente (Quadrantes Horizontais)", tabuleiro.getSetor(new Setor(0, TipoSetor.HORIZONTAL)).getTitulo());
-	}
-
-	@Test
-	public void testSetTitulosQuadrantesSetorVerticalRandomico() throws TitulosExcedemLimiteSetoresException {
-		titulos.remove(0);
-		tabuleiro.setTitulos(titulos, TipoSetor.VERTICAL, true);
-		assertNotNull("Título das linhas do Tabuleiro randomicamente (Quadrantes Verticais)", tabuleiro.getSetor(new Setor(0, TipoSetor.VERTICAL)).getTitulo());
-	}
-	
-	@Test
-	public void testSetTituloQuadranteSetorHorizontal()   {
-		tabuleiro.setTitulo(conteudos.get(0), new Setor(0, TipoSetor.HORIZONTAL));
-		assertNotNull("Título das linhas do Tabuleiro (Quadrantes Horizontais)", tabuleiro.getSetor(new Setor(0, TipoSetor.HORIZONTAL)).getTitulo());
-	}
-	
-	@Test
-	public void testSetTituloQuadranteSetorVertical()   {
-		tabuleiro.setTitulo(conteudos.get(0), new Setor(0, TipoSetor.VERTICAL));
-		assertNotNull("Título das linhas do Tabuleiro (Quadrantes Horizontais)", tabuleiro.getSetor(new Setor(0, TipoSetor.VERTICAL)).getTitulo());
-	}
-
-	@Test
-	public void testGetTotalConteudo() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		tabuleiro.add(conteudos.get(1), new Quadrante(1, 1));
-		tabuleiro.add(conteudos.get(2), new Quadrante(2, 2));
-
-		assertEquals("Total de conteudos no Tabuleiro, independente de onde estiver.", 3, tabuleiro.getTotalConteudo());
-	}
-	
-	@Test(expected = ConteudoExcedeLimitePermitidoException.class)
-	public void testAddProcessoSelecionadoAcimaDoLimitePermitidoNoMesmoQuadrante() throws ConteudoExistenteException,
-			QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		Conteudo conteudo1 = new Conteudo();
-		conteudo1.setCodigo(1);
-		Conteudo conteudo2 = new Conteudo();
-		conteudo2.setCodigo(2);
-		Conteudo conteudo3 = new Conteudo();
-		conteudo3.setCodigo(3);
-		Conteudo conteudo4 = new Conteudo();
-		conteudo4.setCodigo(4);
-		Conteudo conteudo5 = new Conteudo();
-		conteudo5.setCodigo(5);
-		Conteudo conteudo6 = new Conteudo();
-		conteudo6.setCodigo(6);
-		tabuleiro.add(conteudo1, quadrante);
-		tabuleiro.add(conteudo2, quadrante);
-		tabuleiro.add(conteudo3, quadrante);
-		tabuleiro.add(conteudo4, quadrante);
-		tabuleiro.add(conteudo5, quadrante);
-		tabuleiro.add(conteudo6, quadrante);
-	}
-
-	@Test
-	public void testConteudoNaoEncontrado() {
-		assertFalse(tabuleiro.contains(conteudos.get(0)));
-	}
-
-	@Test
-	public void testConteudoEncontrado() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		Conteudo conteudo = new Conteudo();
-		conteudo.setCodigo(1);
-		assertTrue(tabuleiro.contains(conteudo));
-	}
-
-	@Test
-	public void testAddConteudo() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		assertTrue(tabuleiro.add(conteudos.get(0), new Quadrante(0, 0)));
-	}
-
-	@Test(expected = ConteudoExistenteException.class)
-	public void testAddConteudoExistente() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
+	@Test(expected = ElementoExistenteException.class)
+	public void testAddElementoExistente() throws QuadranteInvalidoException, ElementoExistenteException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 	}
 
 	@Test(expected = QuadranteInvalidoException.class)
-	public void testAddConteudoQuadranteInvalidoLimiteSuperior() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(conteudos.get(0), new Quadrante(5, 5));
+	public void testAddElementoQuadranteInvalidoLimiteSuperiorHorizontal() throws ElementoExistenteException, QuadranteInvalidoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(4, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 	}
 
 	@Test(expected = QuadranteInvalidoException.class)
-	public void testAddConteudoQuadranteInvalidoLimiteInferior() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(conteudos.get(0), new Quadrante(-1, -1));
+	public void testAddElementoQuadranteInvalidoLimiteSuperiorVertical() throws ElementoExistenteException, QuadranteInvalidoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(3, TipoSetor.VERTICAL));
+	}
+
+	@Test(expected = QuadranteInvalidoException.class)
+	public void testAddElementoQuadranteInvalidoLimiteInferior() throws ElementoExistenteException, QuadranteInvalidoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(-1, TipoSetor.HORIZONTAL), new Setor<String>(-1, TipoSetor.VERTICAL));
 	}
 
 	@Test
-	public void testRemoveConteudo() throws ConteudoNaoEncontradoException, ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		assertTrue(tabuleiro.remove(conteudos.get(0)));
+	public void testRemoveElemento() throws QuadranteInvalidoException, ElementoExistenteException, ElementoNaoEncontradoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.remove(elementos.get(0));
 	}
 
-	@Test(expected = ConteudoNaoEncontradoException.class)
-	public void testRemoveConteudoNaoEncontrado() throws ConteudoNaoEncontradoException {
-		tabuleiro.remove(conteudos.get(0));
-	}
-
-	@Test
-	public void testGetQuadrante() throws ConteudoNaoEncontradoException, ConteudoExistenteException, QuadranteInvalidoException,
-			ConteudoExcedeLimitePermitidoException {
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		assertNotNull(tabuleiro.getQuadrante(conteudos.get(0)));
-	}
-
-	@Test(expected = ConteudoNaoEncontradoException.class)
-	public void testGetConteudoNaoEncontrado() throws ConteudoNaoEncontradoException {
-		tabuleiro.getQuadrante(conteudos.get(0));
+	@Test(expected = ElementoNaoEncontradoException.class)
+	public void testRemoveElementoNaoEncontrado() throws ElementoNaoEncontradoException, QuadranteInvalidoException, ElementoExistenteException {
+		tabuleiro.remove(elementos.get(0));
 	}
 
 	@Test
-	public void testTabuleiro() {
+	public void testTabuleiro() throws TabuleiroTamanhoInvalidoException {
 		assertNotNull(tabuleiro.toString());
 		// System.out.println(tabuleiro);
 	}
-	
+
 	@Test
-	public void testVerificaTabuleiroComSucesso() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		conteudos.get(0).setTituloHorizontal("Teste");
-		tabuleiro.setTitulo("Teste", new Setor(0, TipoSetor.HORIZONTAL));
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		assertTrue("Conteúdo se encontra em posição correta. Mesma posição do título do setor.", tabuleiro.verificaConteudo(TipoSetor.HORIZONTAL));
+	public void testIgualdadeTabuleiroElementosLugarIdentico() throws QuadranteInvalidoException, ElementoExistenteException, TabuleiroTamanhoInvalidoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(2), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(3), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+
+		Tabuleiro<String> modeloOficial = new Tabuleiro<String>(new TamanhoTabuleiro(4, 3));
+		modeloOficial.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		modeloOficial.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+		modeloOficial.add(elementos.get(2), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		modeloOficial.add(elementos.get(3), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+
+		assertTrue("Elementos iguais de outro tabuleiro.", tabuleiro.equals(modeloOficial));
 	}
-	
+
 	@Test
-	public void testVerificaTabuleiroComErro() throws ConteudoExistenteException, QuadranteInvalidoException, ConteudoExcedeLimitePermitidoException {
-		conteudos.get(0).setTituloHorizontal("Teste");
-		tabuleiro.setTitulo("Teste1", new Setor(0, TipoSetor.HORIZONTAL));
-		tabuleiro.add(conteudos.get(0), new Quadrante(0, 0));
-		assertFalse("Conteúdo não se encontra na posição correta.", tabuleiro.verificaConteudo(TipoSetor.HORIZONTAL));
+	public void testIgualdadeTabuleiroElementosLugarDiferente() throws QuadranteInvalidoException, ElementoExistenteException,
+			TabuleiroTamanhoInvalidoException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(2), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(3), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+
+		Tabuleiro<String> modeloOficial = new Tabuleiro<String>(new TamanhoTabuleiro(4, 3));
+		modeloOficial.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		modeloOficial.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+		modeloOficial.add(elementos.get(3), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		modeloOficial.add(elementos.get(2), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+
+		assertFalse("Elementos diferentes de outro tabuleiro.", tabuleiro.equals(modeloOficial));
+	}
+
+	@Test
+	public void testTabuleiroVazio() {
+		assertTrue(tabuleiro.isEmpty());
+	}
+
+	@Test
+	public void testLimpaTabuleiro() throws QuadranteInvalidoException, ElementoExistenteException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(2), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.add(elementos.get(3), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
+
+		tabuleiro.clear();
+
+		assertTrue(tabuleiro.isEmpty());
 	}
 
 }

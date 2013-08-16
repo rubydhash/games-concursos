@@ -3,76 +3,49 @@ package br.com.concursos.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quadrante {
+public class Quadrante<E> extends ContainerElemento<E> {
 
-	private int linha;
-	private int coluna;
-	private List<Conteudo> conteudos;
+	private Setor<E> setorHorizontal;
+	private Setor<E> setorVertical;
 
-	public Quadrante(int linha, int coluna) {
-		this.setLinha(linha);
-		this.setColuna(coluna);
-		this.conteudos = new ArrayList<Conteudo>();
+	public Quadrante(Setor<E> setorHorizontal, Setor<E> setorVertical) {
+		super(new ArrayList<E>());
+		this.setorHorizontal = setorHorizontal;
+		this.setorVertical = setorVertical;
 	}
 
-	public Quadrante(int linha, int coluna, List<Conteudo> conteudos) {
-		this.setLinha(linha);
-		this.setColuna(coluna);
-		this.conteudos = conteudos;
+	public Quadrante(Setor<E> setorHorizontal, Setor<E> setorVertical, List<E> elementos) {
+		super(elementos);
+		this.setorHorizontal = setorHorizontal;
+		this.setorVertical = setorVertical;
 	}
 
-	public int getLinha() {
-		return linha;
+	public Setor<E> getSetorHorizontal() {
+		return setorHorizontal;
 	}
 
-	public void setLinha(int linha) {
-		this.linha = linha;
+	public Setor<E> getSetorVertical() {
+		return setorVertical;
 	}
 
-	public int getColuna() {
-		return coluna;
-	}
-
-	public void setColuna(int coluna) {
-		this.coluna = coluna;
-	}
-
-	public List<Conteudo> getConteudos() {
-		return conteudos;
-	}
-
-	public boolean add(Conteudo conteudo) {
-		return conteudos.add(conteudo);
-	}
-
-	public boolean remove(Conteudo conteudo) {
-		return conteudos.remove(conteudo);
-	}
-
-	public boolean contains(Conteudo conteudo) {
-		return conteudos.contains(conteudo);
-	}
-
-	public int getTotalConteudo() {
-		return conteudos.size();
-	}
-
-	@Override
-	public String toString() {
-		return "[" + getLinha() + "," + getColuna() + "]";
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
-		Quadrante outroQuadrante;
+		Quadrante<E> outroQuadrante;
 		if (obj instanceof Quadrante) {
-			outroQuadrante = (Quadrante) obj;
+			outroQuadrante = (Quadrante<E>) obj;
 
-			if (this.getLinha() == outroQuadrante.getLinha() && this.getColuna() == outroQuadrante.getColuna()) {
+			if (getElementos().equals(outroQuadrante.getElementos())) {
 				return true;
 			}
 		}
 
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "[" + getSetorHorizontal() + "," + getSetorVertical() + "]";
+	}
+
 }
