@@ -83,7 +83,7 @@ public class Tabuleiro<E> implements Modelo<E> {
 	/**
 	 * Especificado em {@link Modelo#add})
 	 * 
-	 * Observação: Deve ser inserido um setorHorizontal e um setorVertical ({@link Setor}
+	 * Obs.: Deve ser inserido um setorHorizontal e um setorVertical ({@link Setor})
 	 */
 	@Override
 	public Boolean add(E e) throws Exception {
