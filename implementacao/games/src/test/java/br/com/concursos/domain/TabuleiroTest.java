@@ -3,6 +3,7 @@ package br.com.concursos.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import br.com.concursos.enumeration.TipoSetor;
 import br.com.concursos.exception.ElementoExistenteException;
 import br.com.concursos.exception.ElementoNaoEncontradoException;
+import br.com.concursos.exception.LocalizacaoNaoPreenchidaException;
 import br.com.concursos.exception.QuadranteInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
 
@@ -94,6 +96,20 @@ public class TabuleiroTest {
 	@Test(expected = QuadranteInvalidoException.class)
 	public void testAddElementoQuadranteInvalidoLimiteInferior() throws ElementoExistenteException, QuadranteInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(-1, TipoSetor.HORIZONTAL), new Setor<String>(-1, TipoSetor.VERTICAL));
+	}
+
+	@Test(expected = LocalizacaoNaoPreenchidaException.class)
+	public void testAddElementoSemSetor() throws Exception {
+		tabuleiro.add(elementos.get(0));
+	}
+
+	@Test
+	public void testAddElementoSetandoSetor() throws Exception {
+		tabuleiro.setSetorHorizontal(new Setor<String>(1, TipoSetor.HORIZONTAL));
+		tabuleiro.setSetorVertical(new Setor<String>(1, TipoSetor.VERTICAL));
+		assertTrue(tabuleiro.add(elementos.get(0)));
+		assertNull(tabuleiro.getSetorHorizontal());
+		assertNull(tabuleiro.getSetorVertical());
 	}
 
 	@Test

@@ -13,6 +13,6 @@ public class ErrorMessage {
 	public static final String TABULEIRO_TAMANHO_INVALIDO = "Criação do tabuleiro com tamanho inválido!";
 	// public static final String TABULEIRO_VAZIO = "Tabuleiro ainda não foi preenchido!";
 	// public static final String TITULOS_EXCEDEM_LIMITE_SETORES = "O quantitativo de títulos excedem o quantitativo de setores existentes no Tabuleiro!";
-	public static final String LOCALIZACAO_NAO_PREENCHIDA = "Preencha o local a ser adicionado o elemento desejado!";
+	public static final String LOCALIZACAO_NAO_PREENCHIDA = "Local do elemento não preenchido!";
 
 }
