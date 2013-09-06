@@ -6,8 +6,8 @@ import java.util.List;
 import br.com.concursos.enumeration.TipoSetor;
 import br.com.concursos.exception.ElementoExistenteException;
 import br.com.concursos.exception.ElementoNaoEncontradoException;
-import br.com.concursos.exception.LocalizacaoNaoPreenchidaException;
-import br.com.concursos.exception.QuadranteInvalidoException;
+import br.com.concursos.exception.LocalizacaoInsercaoElementoNaoPreenchidaException;
+import br.com.concursos.exception.ArgumentoInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
 
 public class Tabuleiro<E> implements Modelo<E> {
@@ -15,8 +15,8 @@ public class Tabuleiro<E> implements Modelo<E> {
 	private List<Setor<E>> setoresHorizontais;
 	private List<Setor<E>> setoresVerticais;
 	private TamanhoTabuleiro tamanhoTabuleiro;
-	private Setor<E> setorHorizontal;
-	private Setor<E> setorVertical;
+	private Setor<E> setorHorizontalInsercao;
+	private Setor<E> setorVerticalInsercao;
 
 	public Tabuleiro(TamanhoTabuleiro tamanhoTabuleiro) throws TabuleiroTamanhoInvalidoException {
 		if (tamanhoTabuleiro.getLinha() == 0 || tamanhoTabuleiro.getColuna() == 0 || tamanhoTabuleiro.getLinha() < 0 || tamanhoTabuleiro.getColuna() < 0) {
@@ -39,36 +39,36 @@ public class Tabuleiro<E> implements Modelo<E> {
 		return tamanhoTabuleiro;
 	}
 
-	public Setor<E> getSetorHorizontal() {
-		return setorHorizontal;
+	public Setor<E> getSetorHorizontalInsercao() {
+		return setorHorizontalInsercao;
 	}
 
-	public void setSetorHorizontal(Setor<E> setorHorizontal) {
-		this.setorHorizontal = setorHorizontal;
+	public void setSetorHorizontalInsercao(Setor<E> setorHorizontalInsercao) {
+		this.setorHorizontalInsercao = setorHorizontalInsercao;
 	}
 
-	public Setor<E> getSetorVertical() {
-		return setorVertical;
+	public Setor<E> getSetorVerticalInsercao() {
+		return setorVerticalInsercao;
 	}
 
-	public void setSetorVertical(Setor<E> setorVertical) {
-		this.setorVertical = setorVertical;
+	public void setSetorVerticalInsercao(Setor<E> setorVerticalInsercao) {
+		this.setorVerticalInsercao = setorVerticalInsercao;
 	}
 
 	/**
-	 * Adiciona o conteúdo no tabuleiro no quadrante desejado.
+	 * Adiciona o elemento no tabuleiro em um quadrante desejado.
 	 * 
-	 * @param conteudo
+	 * @param e elemento a ser adicionado no tabuleiro
 	 * @param setorHorizontal
 	 * @param setorVertical
 	 * @return {@link Boolean}
-	 * @throws QuadranteInvalidoException
+	 * @throws ArgumentoInvalidoException
 	 * @throws ElementoExistenteException
 	 */
-	public Boolean add(E e, Setor<E> setorHorizontal, Setor<E> setorVertical) throws QuadranteInvalidoException, ElementoExistenteException {
+	public Boolean add(E e, Setor<E> setorHorizontal, Setor<E> setorVertical) throws ArgumentoInvalidoException, ElementoExistenteException {
 		if ((setorHorizontal.getId() < 0 || setorHorizontal.getId() > getSetoresHorizontais().size() - 1)
 				|| (setorVertical.getId() < 0 || setorVertical.getId() > getSetoresVerticais().size() - 1)) {
-			throw new QuadranteInvalidoException();
+			throw new ArgumentoInvalidoException();
 		}
 
 		if (contains(e)) {
@@ -83,17 +83,17 @@ public class Tabuleiro<E> implements Modelo<E> {
 	/**
 	 * Especificado em {@link Modelo#add})
 	 * 
-	 * Obs.: Deve ser inserido um setorHorizontal e um setorVertical ({@link Setor})
+	 * Obs.: Deve ser inserido um setor horizontal e um setor vertical para a inserção do elemento ({@link Setor})
 	 */
 	@Override
 	public Boolean add(E e) throws Exception {
-		if (setorHorizontal == null || setorVertical == null) {
-			throw new LocalizacaoNaoPreenchidaException();
+		if (setorHorizontalInsercao == null || setorVerticalInsercao == null) {
+			throw new LocalizacaoInsercaoElementoNaoPreenchidaException();
 		}
 
-		add(e, setorHorizontal, setorVertical);
-		setSetorHorizontal(null);
-		setSetorVertical(null);
+		add(e, setorHorizontalInsercao, setorVerticalInsercao);
+		setSetorHorizontalInsercao(null);
+		setSetorVerticalInsercao(null);
 
 		return true;
 	}
@@ -109,7 +109,7 @@ public class Tabuleiro<E> implements Modelo<E> {
 	}
 
 	/**
-	 * Recupera o quadrante referente ao elemento no tabuleiro.
+	 * Retorna o quadrante de acordo com o elemento passado ou null caso não encontre algum quadrante com o elemento.
 	 * 
 	 * @param e
 	 *            elemento que será procurado para achar o quadrante desejado.
@@ -169,7 +169,7 @@ public class Tabuleiro<E> implements Modelo<E> {
 	public Boolean isEmpty() {
 		for (int i = 0; i < getSetoresHorizontais().size(); i++) {
 			for (int j = 0; j < getSetoresVerticais().size(); j++) {
-				if (!((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).getElementos().isEmpty()) {
+				if (!((Quadrante<E>) getSetoresHorizontais().get(i).getQuadrantes().get(j)).isEmpty()) {
 					return false;
 				}
 			}
@@ -188,6 +188,15 @@ public class Tabuleiro<E> implements Modelo<E> {
 		}
 
 		return size;
+	}
+	
+	/**
+	 * Retorna a quantidade de setores do tabuleiro
+	 * 
+	 * @return totalSetores total de setores, tanto horizontal quanto vertical
+	 */
+	public Integer sizeSetores() {
+		return getSetoresHorizontais().size() + getSetoresVerticais().size();
 	}
 
 	@Override
@@ -226,6 +235,16 @@ public class Tabuleiro<E> implements Modelo<E> {
 		}
 
 		return tabuleiro.toString();
+	}
+
+	public Boolean addSetor(TipoSetor horizontal) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Boolean removeSetor(Setor<E> setor) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -13,10 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.concursos.enumeration.TipoSetor;
+import br.com.concursos.exception.ArgumentoInvalidoException;
 import br.com.concursos.exception.ElementoExistenteException;
 import br.com.concursos.exception.ElementoNaoEncontradoException;
-import br.com.concursos.exception.LocalizacaoNaoPreenchidaException;
-import br.com.concursos.exception.QuadranteInvalidoException;
+import br.com.concursos.exception.LocalizacaoInsercaoElementoNaoPreenchidaException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
 
 public class TabuleiroTest {
@@ -36,7 +36,7 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testCriacaoTabuleiro() throws TabuleiroTamanhoInvalidoException {
+	public void testConstructTabuleiro() throws TabuleiroTamanhoInvalidoException {
 		Tabuleiro<String> tabuleiroCriado = new Tabuleiro<String>(new TamanhoTabuleiro(4, 3));
 		assertEquals("Total de setores horizontais = 4", 4, tabuleiroCriado.getSetoresHorizontais().size());
 		assertEquals("Total de setores verticais = 3", 3, tabuleiroCriado.getSetoresVerticais().size());
@@ -53,12 +53,17 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testSize() throws ElementoExistenteException, QuadranteInvalidoException {
+	public void testSize() throws ElementoExistenteException, ArgumentoInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(2), new Setor<String>(3, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
 
-		assertEquals("Total de elementos no tabuleiro, independente de onde estiver.", 3, tabuleiro.size().intValue());
+		assertEquals("Total de elementos no tabuleiro, independente de onde estiver", new Integer(3), tabuleiro.size());
+	}
+
+	@Test
+	public void testSizeSetores() {
+		assertEquals("Total de setores no tabuleiro", new Integer(7), tabuleiro.sizeSetores());
 	}
 
 	@Test
@@ -67,59 +72,59 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testElementoEncontrado() throws ElementoExistenteException, QuadranteInvalidoException {
+	public void testElementoEncontrado() throws ElementoExistenteException, ArgumentoInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		assertTrue(tabuleiro.contains(elementos.get(0)));
 	}
 
 	@Test
-	public void testAddElemento() throws QuadranteInvalidoException, ElementoExistenteException {
+	public void testAddElemento() throws ArgumentoInvalidoException, ElementoExistenteException {
 		assertTrue(tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL)));
 	}
 
 	@Test(expected = ElementoExistenteException.class)
-	public void testAddElementoExistente() throws QuadranteInvalidoException, ElementoExistenteException {
+	public void testAddElementoExistente() throws ArgumentoInvalidoException, ElementoExistenteException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 	}
 
-	@Test(expected = QuadranteInvalidoException.class)
-	public void testAddElementoQuadranteInvalidoLimiteSuperiorHorizontal() throws ElementoExistenteException, QuadranteInvalidoException {
+	@Test(expected = ArgumentoInvalidoException.class)
+	public void testAddElementoQuadranteInvalidoLimiteSuperiorHorizontal() throws ElementoExistenteException, ArgumentoInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(4, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 	}
 
-	@Test(expected = QuadranteInvalidoException.class)
-	public void testAddElementoQuadranteInvalidoLimiteSuperiorVertical() throws ElementoExistenteException, QuadranteInvalidoException {
+	@Test(expected = ArgumentoInvalidoException.class)
+	public void testAddElementoQuadranteInvalidoLimiteSuperiorVertical() throws ElementoExistenteException, ArgumentoInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(3, TipoSetor.VERTICAL));
 	}
 
-	@Test(expected = QuadranteInvalidoException.class)
-	public void testAddElementoQuadranteInvalidoLimiteInferior() throws ElementoExistenteException, QuadranteInvalidoException {
+	@Test(expected = ArgumentoInvalidoException.class)
+	public void testAddElementoQuadranteInvalidoLimiteInferior() throws ElementoExistenteException, ArgumentoInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(-1, TipoSetor.HORIZONTAL), new Setor<String>(-1, TipoSetor.VERTICAL));
 	}
 
-	@Test(expected = LocalizacaoNaoPreenchidaException.class)
+	@Test(expected = LocalizacaoInsercaoElementoNaoPreenchidaException.class)
 	public void testAddElementoSemSetor() throws Exception {
 		tabuleiro.add(elementos.get(0));
 	}
 
 	@Test
 	public void testAddElementoSetandoSetor() throws Exception {
-		tabuleiro.setSetorHorizontal(new Setor<String>(1, TipoSetor.HORIZONTAL));
-		tabuleiro.setSetorVertical(new Setor<String>(1, TipoSetor.VERTICAL));
+		tabuleiro.setSetorHorizontalInsercao(new Setor<String>(1, TipoSetor.HORIZONTAL));
+		tabuleiro.setSetorVerticalInsercao(new Setor<String>(1, TipoSetor.VERTICAL));
 		assertTrue(tabuleiro.add(elementos.get(0)));
-		assertNull(tabuleiro.getSetorHorizontal());
-		assertNull(tabuleiro.getSetorVertical());
+		assertNull(tabuleiro.getSetorHorizontalInsercao());
+		assertNull(tabuleiro.getSetorVerticalInsercao());
 	}
 
 	@Test
-	public void testRemoveElemento() throws QuadranteInvalidoException, ElementoExistenteException, ElementoNaoEncontradoException {
+	public void testRemoveElemento() throws ArgumentoInvalidoException, ElementoExistenteException, ElementoNaoEncontradoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		tabuleiro.remove(elementos.get(0));
 	}
 
 	@Test(expected = ElementoNaoEncontradoException.class)
-	public void testRemoveElementoNaoEncontrado() throws ElementoNaoEncontradoException, QuadranteInvalidoException, ElementoExistenteException {
+	public void testRemoveElementoNaoEncontrado() throws ElementoNaoEncontradoException, ArgumentoInvalidoException, ElementoExistenteException {
 		tabuleiro.remove(elementos.get(0));
 	}
 
@@ -130,7 +135,7 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testIgualdadeTabuleiroElementosLugarIdentico() throws QuadranteInvalidoException, ElementoExistenteException, TabuleiroTamanhoInvalidoException {
+	public void testIgualdadeTabuleiroElementosLugarIdentico() throws ArgumentoInvalidoException, ElementoExistenteException, TabuleiroTamanhoInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(2), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
@@ -142,11 +147,11 @@ public class TabuleiroTest {
 		modeloOficial.add(elementos.get(2), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		modeloOficial.add(elementos.get(3), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
 
-		assertTrue("Elementos iguais de outro tabuleiro.", tabuleiro.equals(modeloOficial));
+		assertTrue("Elementos iguais de outro tabuleiro", tabuleiro.equals(modeloOficial));
 	}
 
 	@Test
-	public void testIgualdadeTabuleiroElementosLugarDiferente() throws QuadranteInvalidoException, ElementoExistenteException,
+	public void testIgualdadeTabuleiroElementosLugarDiferente() throws ArgumentoInvalidoException, ElementoExistenteException,
 			TabuleiroTamanhoInvalidoException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
@@ -159,7 +164,7 @@ public class TabuleiroTest {
 		modeloOficial.add(elementos.get(3), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		modeloOficial.add(elementos.get(2), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
 
-		assertFalse("Elementos diferentes de outro tabuleiro.", tabuleiro.equals(modeloOficial));
+		assertFalse("Elementos diferentes de outro tabuleiro", tabuleiro.equals(modeloOficial));
 	}
 
 	@Test
@@ -168,7 +173,7 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testLimpaTabuleiro() throws QuadranteInvalidoException, ElementoExistenteException {
+	public void testLimpaTabuleiro() throws ArgumentoInvalidoException, ElementoExistenteException {
 		tabuleiro.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(1), new Setor<String>(1, TipoSetor.HORIZONTAL), new Setor<String>(2, TipoSetor.VERTICAL));
 		tabuleiro.add(elementos.get(2), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
@@ -177,6 +182,27 @@ public class TabuleiroTest {
 		tabuleiro.clear();
 
 		assertTrue(tabuleiro.isEmpty());
+	}
+
+	@Test
+	public void testIsEmpty() {
+		assertTrue(tabuleiro.isEmpty());
+	}
+
+	@Test
+	public void testIsNotEmpty() throws ArgumentoInvalidoException, ElementoExistenteException {
+		tabuleiro.add(elementos.get(0), new Setor<String>(0, TipoSetor.HORIZONTAL), new Setor<String>(1, TipoSetor.VERTICAL));
+		assertFalse(tabuleiro.isEmpty());
+	}
+
+	@Test
+	public void testAddSetor() {
+		assertTrue(tabuleiro.addSetor(TipoSetor.HORIZONTAL));
+	}
+
+	@Test
+	public void testRemoveSetor() {
+		assertTrue(tabuleiro.removeSetor(new Setor<String>(1, TipoSetor.HORIZONTAL)));
 	}
 
 }
