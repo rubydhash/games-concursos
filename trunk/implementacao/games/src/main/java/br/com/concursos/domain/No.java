@@ -5,21 +5,23 @@ import java.util.List;
 
 public class No<E> extends ContainerElemento<E> {
 
-	private Integer id;
+	private Long id;
 	private No<E> pai;
 	private List<No<E>> filhos;
 
-	public No(Integer id) {
+	public No(Long id) {
 		super(new ArrayList<E>());
+		filhos = new ArrayList<No<E>>();
 		this.id = id;
 	}
 
-	public No(Integer id, List<E> elementos) {
+	public No(Long id, List<E> elementos) {
 		super(elementos);
+		filhos = new ArrayList<No<E>>();
 		this.id = id;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -41,9 +43,16 @@ public class No<E> extends ContainerElemento<E> {
 
 	@Override
 	public String toString() {
-		return "Id: " + this.getId() + " | " + this.getFilhos().toString();
+		return "Id: " + this.getId();
 	}
 
+	/**
+	 * Compara o id e os elementos internos do no.
+	 * 
+	 * @param obj
+	 *            outro nó a ser comparado
+	 * @return {@link Boolean}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
@@ -51,12 +60,17 @@ public class No<E> extends ContainerElemento<E> {
 		if (obj instanceof No) {
 			outroNo = (No<E>) obj;
 
-			if (this.getElementos().equals(outroNo.getElementos())) {
+			if (id.equals(outroNo.getId())) {
 				return true;
 			}
 		}
 
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}	
 
 }
