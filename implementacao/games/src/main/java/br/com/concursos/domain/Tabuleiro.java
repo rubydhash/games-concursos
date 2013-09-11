@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.concursos.enumeration.TipoSetor;
+import br.com.concursos.exception.ArgumentoInvalidoException;
 import br.com.concursos.exception.ElementoExistenteException;
 import br.com.concursos.exception.ElementoNaoEncontradoException;
 import br.com.concursos.exception.LocalizacaoInsercaoElementoNaoPreenchidaException;
-import br.com.concursos.exception.ArgumentoInvalidoException;
 import br.com.concursos.exception.TabuleiroTamanhoInvalidoException;
 
 public class Tabuleiro<E> implements Modelo<E> {
@@ -58,7 +58,8 @@ public class Tabuleiro<E> implements Modelo<E> {
 	/**
 	 * Adiciona o elemento no tabuleiro em um quadrante desejado.
 	 * 
-	 * @param e elemento a ser adicionado no tabuleiro
+	 * @param e
+	 *            elemento a ser adicionado no tabuleiro
 	 * @param setorHorizontal
 	 * @param setorVertical
 	 * @return {@link Boolean}
@@ -145,22 +146,20 @@ public class Tabuleiro<E> implements Modelo<E> {
 		setoresHorizontais = new ArrayList<Setor<E>>();
 		setoresVerticais = new ArrayList<Setor<E>>();
 		for (int i = 0; i < tamanhoTabuleiro.getLinha(); i++) {
-			Setor<E> setorHorizontal = new Setor<>(i, TipoSetor.HORIZONTAL);
+			Setor<E> setorHorizontal = new Setor<E>(i, TipoSetor.HORIZONTAL);
 			getSetoresHorizontais().add(setorHorizontal);
 
 			for (int j = 0; j < tamanhoTabuleiro.getColuna(); j++) {
 				Setor<E> setorVertical;
 
 				if (i == 0) {
-					setorVertical = new Setor<>(j, TipoSetor.VERTICAL);
+					setorVertical = new Setor<E>(j, TipoSetor.VERTICAL);
 					getSetoresVerticais().add(setorVertical);
 				} else {
 					setorVertical = getSetoresVerticais().get(j);
 				}
 
-				Quadrante<E> quadrante = new Quadrante<>(setorHorizontal, setorVertical);
-				setorHorizontal.addQuadrante(quadrante);
-				setorVertical.addQuadrante(quadrante);
+				addQuadrante(setorHorizontal, setorVertical);
 			}
 		}
 	}
@@ -189,7 +188,7 @@ public class Tabuleiro<E> implements Modelo<E> {
 
 		return size;
 	}
-	
+
 	/**
 	 * Retorna a quantidade de setores do tabuleiro
 	 * 
@@ -237,13 +236,70 @@ public class Tabuleiro<E> implements Modelo<E> {
 		return tabuleiro.toString();
 	}
 
-	public Boolean addSetor(TipoSetor horizontal) {
-		// TODO Auto-generated method stub
-		return false;
+	/**
+	 * Retorna o setor de acordo com o índice passado ou null caso não encontre o setor desejado.
+	 * 
+	 * @param setor
+	 *            contendo o id e o tipo do setor a ser consultado
+	 * @return {@link Setor} setor com todas as informações preenchidas ou null caso não encontre
+	 */
+	private Setor<E> getSetor(Setor<E> setor) {
+		if (setor.getTipo().equals(TipoSetor.HORIZONTAL)) {
+			for (Setor<E> setorHorizontal : setoresHorizontais) {
+				if (setorHorizontal.getId().equals(setor.getId())) {
+					return setorHorizontal;
+				}
+			}
+		} else if (setor.getTipo().equals(TipoSetor.VERTICAL)) {
+			for (Setor<E> setorVertical : setoresVerticais) {
+				if (setorVertical.getId().equals(setor.getId())) {
+					return setorVertical;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public Boolean addSetor(TipoSetor tipoSetor) {
+		List<Setor<E>> setoresFixos = null;
+		List<Setor<E>> setoresMutaveis = null;
+
+		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
+			setoresFixos = getSetoresHorizontais();
+			setoresMutaveis = getSetoresVerticais();
+		} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
+			setoresFixos = getSetoresVerticais();
+			setoresMutaveis = getSetoresHorizontais();
+		}
+
+		Setor<E> setorFixo = new Setor<E>(setoresFixos.size(), tipoSetor);
+		setoresFixos.add(setorFixo);
+
+		for (Setor<E> setorMutavel : setoresMutaveis) {
+			if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
+				addQuadrante(setorFixo, setorMutavel);
+			} else {
+				addQuadrante(setorMutavel, setorFixo);
+			}
+		}
+
+		return true;
+	}
+
+	private void addQuadrante(Setor<E> setorHorizontal, Setor<E> setorVertical) {
+		Quadrante<E> quadrante = new Quadrante<E>(setorHorizontal, setorVertical);
+		setorHorizontal.addQuadrante(quadrante);
+		setorVertical.addQuadrante(quadrante);
 	}
 
 	public Boolean removeSetor(Setor<E> setor) {
-		// TODO Auto-generated method stub
+		if (setor.getTipo().equals(TipoSetor.HORIZONTAL)) {
+			return setoresHorizontais.remove(getSetor(setor));
+		} else if (setor.getTipo().equals(TipoSetor.VERTICAL)) {
+			return setoresVerticais.remove(getSetor(setor));
+		}
+
 		return false;
 	}
 

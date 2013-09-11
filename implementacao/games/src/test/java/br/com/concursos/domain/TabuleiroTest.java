@@ -197,12 +197,20 @@ public class TabuleiroTest {
 
 	@Test
 	public void testAddSetor() {
-		assertTrue(tabuleiro.addSetor(TipoSetor.HORIZONTAL));
+		System.out.println(tabuleiro);
+		assertTrue(tabuleiro.addSetor(TipoSetor.VERTICAL));
+		assertEquals("Após a inserção o total de setores verticais deverá ser de 4 setores", 4, tabuleiro.getSetoresHorizontais().size());
+		System.out.println(tabuleiro);
 	}
 
 	@Test
 	public void testRemoveSetor() {
 		assertTrue(tabuleiro.removeSetor(new Setor<String>(1, TipoSetor.HORIZONTAL)));
+	}
+	
+	@Test
+	public void testRemoveSetorNaoExistenteTabuleiro() {
+		assertFalse(tabuleiro.removeSetor(new Setor<String>(5, TipoSetor.HORIZONTAL)));
 	}
 
 }
