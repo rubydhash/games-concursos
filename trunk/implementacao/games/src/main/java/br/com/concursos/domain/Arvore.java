@@ -111,7 +111,7 @@ public class Arvore<E> implements Modelo<E> {
 	}
 
 	public Boolean contains(No<E> no) {
-		return mapNos.containsKey(no);
+		return mapNos.containsKey(getNo(no));
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class Arvore<E> implements Modelo<E> {
 	 */
 	private No<E> getNo(No<E> no) {
 		for (No<E> noSearch : mapNos.keySet()) {
-			if (noSearch.equals(no)) {
+			if (noSearch.getId().equals(no.getId())) {
 				return noSearch;
 			}
 		}
@@ -247,10 +247,10 @@ public class Arvore<E> implements Modelo<E> {
 			return false;
 		}
 
+		mapNos.remove(noRemovido);
 		Collection<List<No<E>>> lista = mapNos.values();
 		for (List<No<E>> list : lista) {
 			if (list.contains(noRemovido)) {
-				mapNos.remove(noRemovido);
 				return list.remove(noRemovido);
 			}
 		}

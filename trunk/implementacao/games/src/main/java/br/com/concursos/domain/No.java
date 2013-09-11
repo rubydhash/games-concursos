@@ -60,17 +60,25 @@ public class No<E> extends ContainerElemento<E> {
 		if (obj instanceof No) {
 			outroNo = (No<E>) obj;
 
-			if (id.equals(outroNo.getId())) {
+			if (getId().equals(outroNo.getId()) && getElementos().equals(getElementos()) && getFilhos().equals(outroNo.getFilhos())) {
+				if (getPai() != null) {
+					if (getPai().equals(outroNo.getPai())) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+				
 				return true;
 			}
 		}
 
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return id.hashCode();
-	}	
+	}
 
 }
