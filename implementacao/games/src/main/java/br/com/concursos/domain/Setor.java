@@ -3,15 +3,15 @@ package br.com.concursos.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.concursos.enumeration.TipoSetor;
+import br.com.concursos.enumeration.TipoSetorEnum;
 
 public class Setor<E> {
 
 	private Integer id;
-	private TipoSetor tipo;
+	private TipoSetorEnum tipo;
 	private List<Quadrante<E>> quadrantes;
 
-	public Setor(Integer id, TipoSetor tipo) {
+	public Setor(Integer id, TipoSetorEnum tipo) {
 		this.id = id;
 		this.tipo = tipo;
 		this.quadrantes = new ArrayList<Quadrante<E>>();
@@ -21,7 +21,7 @@ public class Setor<E> {
 		return id;
 	}
 
-	public TipoSetor getTipo() {
+	public TipoSetorEnum getTipo() {
 		return tipo;
 	}
 

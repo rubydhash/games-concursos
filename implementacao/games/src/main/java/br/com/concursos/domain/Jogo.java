@@ -1,6 +1,9 @@
 package br.com.concursos.domain;
 
 import java.util.Date;
+import java.util.List;
+
+import br.com.concursos.enumeration.NivelDificuldadeEnum;
 
 public class Jogo {
 
@@ -11,6 +14,14 @@ public class Jogo {
 	private String versao;
 
 	private Date dataCriacao;
+
+	private List<Item> itens;
+
+	private Modelo<Item> modelo;
+	
+	private Usuario usuario;
+	
+	private NivelDificuldadeEnum nivelDificuldade;
 
 	public void inicializa() {
 
@@ -50,6 +61,38 @@ public class Jogo {
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
+	}
+
+	public List<Item> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<Item> itens) {
+		this.itens = itens;
+	}
+
+	public Modelo<Item> getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(Modelo<Item> modelo) {
+		this.modelo = modelo;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public NivelDificuldadeEnum getNivelDificuldade() {
+		return nivelDificuldade;
+	}
+
+	public void setNivelDificuldade(NivelDificuldadeEnum nivelDificuldade) {
+		this.nivelDificuldade = nivelDificuldade;
 	}
 
 }

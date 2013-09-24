@@ -3,7 +3,7 @@ package br.com.concursos.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.concursos.enumeration.TipoSetor;
+import br.com.concursos.enumeration.TipoSetorEnum;
 import br.com.concursos.exception.ArgumentoInvalidoException;
 import br.com.concursos.exception.ElementoExistenteException;
 import br.com.concursos.exception.ElementoNaoEncontradoException;
@@ -146,14 +146,14 @@ public class Tabuleiro<E> implements Modelo<E> {
 		setoresHorizontais = new ArrayList<Setor<E>>();
 		setoresVerticais = new ArrayList<Setor<E>>();
 		for (int i = 0; i < tamanhoTabuleiro.getLinha(); i++) {
-			Setor<E> setorHorizontal = new Setor<E>(i, TipoSetor.HORIZONTAL);
+			Setor<E> setorHorizontal = new Setor<E>(i, TipoSetorEnum.HORIZONTAL);
 			getSetoresHorizontais().add(setorHorizontal);
 
 			for (int j = 0; j < tamanhoTabuleiro.getColuna(); j++) {
 				Setor<E> setorVertical;
 
 				if (i == 0) {
-					setorVertical = new Setor<E>(j, TipoSetor.VERTICAL);
+					setorVertical = new Setor<E>(j, TipoSetorEnum.VERTICAL);
 					getSetoresVerticais().add(setorVertical);
 				} else {
 					setorVertical = getSetoresVerticais().get(j);
@@ -244,13 +244,13 @@ public class Tabuleiro<E> implements Modelo<E> {
 	 * @return {@link Setor} setor com todas as informações preenchidas ou null caso não encontre
 	 */
 	private Setor<E> getSetor(Setor<E> setor) {
-		if (setor.getTipo().equals(TipoSetor.HORIZONTAL)) {
+		if (setor.getTipo().equals(TipoSetorEnum.HORIZONTAL)) {
 			for (Setor<E> setorHorizontal : setoresHorizontais) {
 				if (setorHorizontal.getId().equals(setor.getId())) {
 					return setorHorizontal;
 				}
 			}
-		} else if (setor.getTipo().equals(TipoSetor.VERTICAL)) {
+		} else if (setor.getTipo().equals(TipoSetorEnum.VERTICAL)) {
 			for (Setor<E> setorVertical : setoresVerticais) {
 				if (setorVertical.getId().equals(setor.getId())) {
 					return setorVertical;
@@ -261,14 +261,14 @@ public class Tabuleiro<E> implements Modelo<E> {
 		return null;
 	}
 
-	public Boolean addSetor(TipoSetor tipoSetor) {
+	public Boolean addSetor(TipoSetorEnum tipoSetor) {
 		List<Setor<E>> setoresFixos = null;
 		List<Setor<E>> setoresMutaveis = null;
 
-		if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
+		if (tipoSetor.equals(TipoSetorEnum.HORIZONTAL)) {
 			setoresFixos = getSetoresHorizontais();
 			setoresMutaveis = getSetoresVerticais();
-		} else if (tipoSetor.equals(TipoSetor.VERTICAL)) {
+		} else if (tipoSetor.equals(TipoSetorEnum.VERTICAL)) {
 			setoresFixos = getSetoresVerticais();
 			setoresMutaveis = getSetoresHorizontais();
 		}
@@ -277,7 +277,7 @@ public class Tabuleiro<E> implements Modelo<E> {
 		setoresFixos.add(setorFixo);
 
 		for (Setor<E> setorMutavel : setoresMutaveis) {
-			if (tipoSetor.equals(TipoSetor.HORIZONTAL)) {
+			if (tipoSetor.equals(TipoSetorEnum.HORIZONTAL)) {
 				addQuadrante(setorFixo, setorMutavel);
 			} else {
 				addQuadrante(setorMutavel, setorFixo);
@@ -294,9 +294,9 @@ public class Tabuleiro<E> implements Modelo<E> {
 	}
 
 	public Boolean removeSetor(Setor<E> setor) {
-		if (setor.getTipo().equals(TipoSetor.HORIZONTAL)) {
+		if (setor.getTipo().equals(TipoSetorEnum.HORIZONTAL)) {
 			return setoresHorizontais.remove(getSetor(setor));
-		} else if (setor.getTipo().equals(TipoSetor.VERTICAL)) {
+		} else if (setor.getTipo().equals(TipoSetorEnum.VERTICAL)) {
 			return setoresVerticais.remove(getSetor(setor));
 		}
 
