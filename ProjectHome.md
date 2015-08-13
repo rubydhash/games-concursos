@@ -1,0 +1,1 @@
+Jogos de memorização para algumas matérias de TI para concursos. Algumas matérias PMBOK, CMMI, MPS.BR, ITIL, COBIT, GOF entre outros.
